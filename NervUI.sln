@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B7A01AC3-FF18-41E0-81FF-9A2AB49D24CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NervUI", "src\NervUI\NervUI.csproj", "{E0C3D6E9-389D-46B0-AE93-C596DA449F20}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E0C3D6E9-389D-46B0-AE93-C596DA449F20} = {B7A01AC3-FF18-41E0-81FF-9A2AB49D24CF}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0C3D6E9-389D-46B0-AE93-C596DA449F20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0C3D6E9-389D-46B0-AE93-C596DA449F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0C3D6E9-389D-46B0-AE93-C596DA449F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0C3D6E9-389D-46B0-AE93-C596DA449F20}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
