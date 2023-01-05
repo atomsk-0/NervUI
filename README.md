@@ -16,4 +16,4 @@ To see how to use NervUi Check [Example](https://github.com/byte-0x74/NervUI/blo
 - [Dear ImGui](https://github.com/ocornut/imgui)
 - [GLFW](https://github.com/glfw/glfw)
 - [OpenTK](https://github.com/opentk/opentk)
-- [Mochi.DearImGui(https://github.com/MochiLibraries/Mochi.DearImGui) (awesome DearImGui Wrapper for C#)
+- [Mochi.DearImGui](https://github.com/MochiLibraries/Mochi.DearImGui) (awesome DearImGui Wrapper for C#)
