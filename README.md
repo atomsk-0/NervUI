@@ -1,8 +1,10 @@
 # NervUI
 
-NervUI Is a easy and simple app framework with Imgui and OpenGL as backend.
+NervUI Is a easy to use and simple app framework with Imgui and OpenGL as backend.
 
 This project is still in really early stage and supports only x64 currently
+
+![Sample](https://cdn.discordapp.com/attachments/1060588352535023646/1060644927635193886/image.png)
 
 ## Requirements
 - .NET 6.0 or 7.0 SDK
