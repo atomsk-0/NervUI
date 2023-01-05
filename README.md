@@ -1,6 +1,6 @@
 # NervUI
 
-NervUI Is a easy and simple app framework with Imgui and OpenGL as backend.
+NervUI Is a easy to use and simple app framework with Imgui and OpenGL as backend.
 
 This project is still in really early stage and supports only x64 currently
 
