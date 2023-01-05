@@ -5,14 +5,11 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\NervUI\NervUI.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="ImGui.NET" Version="1.89.2" />
     </ItemGroup>
 
 </Project>

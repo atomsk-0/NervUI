@@ -1,13 +1,31 @@
-﻿using ImGuiNET;
+﻿using System.Numerics;
+using Mochi.DearImGui;
 using NervUI;
 
 namespace DemoWindow;
 
-public class DemoLayer : Layer//TODO!
+public class DemoLayer : Layer
 {
-    protected override void OnUIRender()
+    public override unsafe void OnUIRender()
     {
-        ImGui.ShowDemoWindow();
+        bool open = true;
+        ImGui.ShowDemoWindow(&open);
+    }
+}
+
+public class DemoLayer2 : Layer
+{
+    private int num = 0;
+    public override unsafe void OnUIRender()
+    {
+        ImGui.Begin("NervUI Demo");
+        ImGui.Text("Hello World!");
+        if (ImGui.Button("Click here!", new Vector2(100, 20)))
+        {
+            num++;
+        }
+        ImGui.Text($"Button clicked {num} times.");
+        ImGui.End();
     }
 }
 
@@ -15,21 +33,26 @@ internal static class Program
 {
     private static Application _application;
     private static bool g_applicationRunning = true;
-    
-    private static void Main(string[] args)
+    private static void Main()
     {
         while (g_applicationRunning)
         {
-            var options = new ApplicationOptions();
+            var options = new ApplicationOptions()
+            {
+                Title = "Demo Window",
+                Size = new(1280, 720)
+            };
             
-            options.Title = "Demo Window";
             _application = Application.CreateApplication(options);
-            _application.PushLayer<DemoLayer>();//TODO!
+            
+            _application.PushLayer<DemoLayer>();
+            _application.PushLayer<DemoLayer2>();
+            
             _application.Run();
             
             g_applicationRunning = false;
         }
-        //Application is no more running..
-        Environment.Exit(0);
+        
+        _application.Exit();
     }
 }
