@@ -56,7 +56,7 @@ internal static class Program
             //Options for App
             var options = new ApplicationOptions()
             {
-                Title = "Demo Window",
+                Title = "NervUI Demo Window",
                 Size = new(1280, 720),
                 DefaultFont = new NervFont("Roboto", "Fonts/Roboto-Medium.ttf", 16f)//Set this as new DefaultFont
             };
