@@ -13,6 +13,10 @@ public class Application : IDisposable
     
     internal static List<NervFont> Fonts = new();
 
+    public delegate void MenuBarDelegate();
+
+    public event MenuBarDelegate MenuBar;
+
     private void CreateWindow()
     {
         var nativeWindowSettings = new NativeWindowSettings
@@ -37,7 +41,7 @@ public class Application : IDisposable
         return application;
     }
     
-    public void PushLayer<T>()//TODO!
+    public void PushLayer<T>()
     {
        Layer layer = (Layer)Activator.CreateInstance(typeof(T));
        Window.Layers.Add(layer);
@@ -54,9 +58,9 @@ public class Application : IDisposable
         ImGui.PushFont(font.FontData);
     }
 
-    public static void SetDefaultFont(string fontName)
+    public void SetMenuBarCallback(Action action)
     {
-        
+        Window.menuBarCallback = action;
     }
     
     public static void PopFont()
@@ -82,6 +86,3 @@ public class Application : IDisposable
 
     ~Application() => Dispose();
 }
-
-//TODO ADD CUSTOM FONT SUPPORT
-//TODO ADD MORE EVENTS

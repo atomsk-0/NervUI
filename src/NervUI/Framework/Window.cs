@@ -16,6 +16,8 @@ public unsafe class GLFWWindow : NativeWindow
 
     private readonly RendererBackend RendererBackend;
 
+    internal Action menuBarCallback;
+
     private Application _applicationInstance;
 
     public List<Layer> Layers = new();
@@ -71,11 +73,12 @@ public unsafe class GLFWWindow : NativeWindow
         var io = ImGui.GetIO();
         foreach (var font in Application.Fonts.Where(c => c.Loaded == false))
         {
+            Console.WriteLine("Loaded font " + font.FontPath);
             font.FontData = io->Fonts->AddFontFromFileTTF(font.FontPath, font.FontSize);
             font.Loaded = true;
         }
-            
     }
+    
     public void Run()
     {
         var io = ImGui.GetIO();
@@ -93,6 +96,47 @@ public unsafe class GLFWWindow : NativeWindow
             PlatformBackend.NewFrame();
             ImGui.NewFrame();
 
+            {
+                ImGuiDockNodeFlags dockNodeFlags = ImGuiDockNodeFlags.None;
+
+                ImGuiWindowFlags windowFlags = ImGuiWindowFlags.NoDocking;
+
+                if (menuBarCallback != null)
+                    windowFlags |= ImGuiWindowFlags.MenuBar;
+
+                ImGuiViewport* viewport = ImGui.GetMainViewport();
+                ImGui.SetNextWindowPos(new Vector2(viewport->WorkPos.X, viewport->WorkPos.Y), ImGuiCond.None, new Vector2(0, 0));
+                ImGui.SetNextWindowSize(viewport->WorkSize);
+                ImGui.SetNextWindowViewport(viewport->ID);
+
+                windowFlags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize |
+                               ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus |
+                               ImGuiWindowFlags.NoNavFocus;
+
+                if (dockNodeFlags.HasFlag(ImGuiDockNodeFlags.PassthruCentralNode))
+                    windowFlags |= ImGuiWindowFlags.NoBackground;
+                
+                
+                ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
+                ImGui.Begin("NervUI Dockspace", null, windowFlags);
+                ImGui.PopStyleVar();
+
+                var iox = ImGui.GetIO();
+                if (io->ConfigFlags.HasFlag(ImGuiConfigFlags.DockingEnable))
+                {
+                    var dockspace_id = ImGui.GetID("OpenGLAppDockspace");
+                    ImGui.DockSpace(dockspace_id, new Vector2(0, 0), dockNodeFlags);
+                }
+
+                if (menuBarCallback != null)
+                {
+                    if (ImGui.BeginMenuBar())
+                    {
+                        menuBarCallback();
+                        ImGui.EndMenuBar();
+                    }
+                }
+            }
             //RENDER IMGUI HERE
             foreach (var layer in Layers)
                 layer.OnUIRender();
