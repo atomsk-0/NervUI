@@ -313,6 +313,233 @@ public class ImGuiManaged
             return result;
         }
     }
+    
+    
+    public static unsafe bool Selectable(string label)
+        {
+            byte* native_label;
+            int label_byteCount = 0;
+            if (label != null)
+            {
+                label_byteCount = Encoding.UTF8.GetByteCount(label);
+                if (label_byteCount > Util.StackAllocationSizeLimit)
+                {
+                    native_label = Util.Allocate(label_byteCount + 1);
+                }
+                else
+                {
+                    byte* native_label_stackBytes = stackalloc byte[label_byteCount + 1];
+                    native_label = native_label_stackBytes;
+                }
+                int native_label_offset = Util.GetUtf8(label, native_label, label_byteCount);
+                native_label[native_label_offset] = 0;
+            }
+            else { native_label = null; }
+            ImGuiSelectableFlags flags = (ImGuiSelectableFlags)0;
+            Vector2 size = new Vector2();
+            var result = ImGui.Selectable(native_label, false, flags,
+                new System.Numerics.Vector2(size.X, size.Y));
+            if (label_byteCount > Util.StackAllocationSizeLimit)
+            {
+                Util.Free(native_label);
+            }
+
+            return result;
+        }
+        public static unsafe bool Selectable(string label, bool selected)
+        {
+            byte* native_label;
+            int label_byteCount = 0;
+            if (label != null)
+            {
+                label_byteCount = Encoding.UTF8.GetByteCount(label);
+                if (label_byteCount > Util.StackAllocationSizeLimit)
+                {
+                    native_label = Util.Allocate(label_byteCount + 1);
+                }
+                else
+                {
+                    byte* native_label_stackBytes = stackalloc byte[label_byteCount + 1];
+                    native_label = native_label_stackBytes;
+                }
+                int native_label_offset = Util.GetUtf8(label, native_label, label_byteCount);
+                native_label[native_label_offset] = 0;
+            }
+            else { native_label = null; }
+            byte native_selected = selected ? (byte)1 : (byte)0;
+            ImGuiSelectableFlags flags = (ImGuiSelectableFlags)0;
+            Vector2 size = new Vector2();
+            var result = ImGui.Selectable(native_label, selected, flags,
+                new System.Numerics.Vector2(size.X, size.Y));
+            if (label_byteCount > Util.StackAllocationSizeLimit)
+            {
+                Util.Free(native_label);
+            }
+
+            return result;
+        }
+        public static unsafe bool Selectable(string label, bool selected, ImGuiSelectableFlags flags)
+        {
+            byte* native_label;
+            int label_byteCount = 0;
+            if (label != null)
+            {
+                label_byteCount = Encoding.UTF8.GetByteCount(label);
+                if (label_byteCount > Util.StackAllocationSizeLimit)
+                {
+                    native_label = Util.Allocate(label_byteCount + 1);
+                }
+                else
+                {
+                    byte* native_label_stackBytes = stackalloc byte[label_byteCount + 1];
+                    native_label = native_label_stackBytes;
+                }
+                int native_label_offset = Util.GetUtf8(label, native_label, label_byteCount);
+                native_label[native_label_offset] = 0;
+            }
+            else { native_label = null; }
+            byte native_selected = selected ? (byte)1 : (byte)0;
+            Vector2 size = new Vector2();
+            var result = ImGui.Selectable(native_label, selected, flags,
+                new System.Numerics.Vector2(size.X, size.Y));
+            if (label_byteCount > Util.StackAllocationSizeLimit)
+            {
+                Util.Free(native_label);
+            }
+            return result;
+        }
+        public static unsafe bool Selectable(string label, bool selected, ImGuiSelectableFlags flags, Vector2 size)
+        {
+            byte* native_label;
+            int label_byteCount = 0;
+            if (label != null)
+            {
+                label_byteCount = Encoding.UTF8.GetByteCount(label);
+                if (label_byteCount > Util.StackAllocationSizeLimit)
+                {
+                    native_label = Util.Allocate(label_byteCount + 1);
+                }
+                else
+                {
+                    byte* native_label_stackBytes = stackalloc byte[label_byteCount + 1];
+                    native_label = native_label_stackBytes;
+                }
+                int native_label_offset = Util.GetUtf8(label, native_label, label_byteCount);
+                native_label[native_label_offset] = 0;
+            }
+            else { native_label = null; }
+            byte native_selected = selected ? (byte)1 : (byte)0;
+            var result = ImGui.Selectable(native_label, selected, flags,
+                new System.Numerics.Vector2(size.X, size.Y));
+            if (label_byteCount > Util.StackAllocationSizeLimit)
+            {
+                Util.Free(native_label);
+            }
+
+            return result;
+        }
+        public static unsafe bool Selectable(string label, ref bool p_selected)
+        {
+            byte* native_label;
+            int label_byteCount = 0;
+            if (label != null)
+            {
+                label_byteCount = Encoding.UTF8.GetByteCount(label);
+                if (label_byteCount > Util.StackAllocationSizeLimit)
+                {
+                    native_label = Util.Allocate(label_byteCount + 1);
+                }
+                else
+                {
+                    byte* native_label_stackBytes = stackalloc byte[label_byteCount + 1];
+                    native_label = native_label_stackBytes;
+                }
+                int native_label_offset = Util.GetUtf8(label, native_label, label_byteCount);
+                native_label[native_label_offset] = 0;
+            }
+            else { native_label = null; }
+            byte native_p_selected_val = p_selected ? (byte)1 : (byte)0;
+            byte* native_p_selected = &native_p_selected_val;
+            ImGuiSelectableFlags flags = (ImGuiSelectableFlags)0;
+            Vector2 size = new Vector2();
+            bool ok = p_selected;
+            bool* test = &ok;
+            var result = ImGui.Selectable(native_label, test, flags,
+                new System.Numerics.Vector2(size.X, size.Y));
+            if (label_byteCount > Util.StackAllocationSizeLimit)
+            {
+                Util.Free(native_label);
+            }
+            p_selected = native_p_selected_val != 0;
+            return result;
+        }
+        public static unsafe bool Selectable(string label, ref bool p_selected, ImGuiSelectableFlags flags)
+        {
+            byte* native_label;
+            int label_byteCount = 0;
+            if (label != null)
+            {
+                label_byteCount = Encoding.UTF8.GetByteCount(label);
+                if (label_byteCount > Util.StackAllocationSizeLimit)
+                {
+                    native_label = Util.Allocate(label_byteCount + 1);
+                }
+                else
+                {
+                    byte* native_label_stackBytes = stackalloc byte[label_byteCount + 1];
+                    native_label = native_label_stackBytes;
+                }
+                int native_label_offset = Util.GetUtf8(label, native_label, label_byteCount);
+                native_label[native_label_offset] = 0;
+            }
+            else { native_label = null; }
+            byte native_p_selected_val = p_selected ? (byte)1 : (byte)0;
+            byte* native_p_selected = &native_p_selected_val;
+            Vector2 size = new Vector2();
+            bool ok = p_selected;
+            bool* test = &ok;
+            var result = ImGui.Selectable(native_label, test, flags,
+                new System.Numerics.Vector2(size.X, size.Y));
+            if (label_byteCount > Util.StackAllocationSizeLimit)
+            {
+                Util.Free(native_label);
+            }
+            p_selected = native_p_selected_val != 0;
+            return result;
+        }
+        public static unsafe bool Selectable(string label, ref bool p_selected, ImGuiSelectableFlags flags, Vector2 size)
+        {
+            byte* native_label;
+            int label_byteCount = 0;
+            if (label != null)
+            {
+                label_byteCount = Encoding.UTF8.GetByteCount(label);
+                if (label_byteCount > Util.StackAllocationSizeLimit)
+                {
+                    native_label = Util.Allocate(label_byteCount + 1);
+                }
+                else
+                {
+                    byte* native_label_stackBytes = stackalloc byte[label_byteCount + 1];
+                    native_label = native_label_stackBytes;
+                }
+                int native_label_offset = Util.GetUtf8(label, native_label, label_byteCount);
+                native_label[native_label_offset] = 0;
+            }
+            else { native_label = null; }
+            byte native_p_selected_val = p_selected ? (byte)1 : (byte)0;
+            byte* native_p_selected = &native_p_selected_val;
+            bool ok = p_selected;
+            bool* test = &ok;
+            var result = ImGui.Selectable(native_label, test, flags,
+                new System.Numerics.Vector2(size.X, size.Y));
+            if (label_byteCount > Util.StackAllocationSizeLimit)
+            {
+                Util.Free(native_label);
+            }
+            p_selected = native_p_selected_val != 0;
+            return result;
+        }
 
     public static unsafe bool InputText(string label, ref string input, uint maxLength,
         ImGuiInputTextFlags flags = ImGuiInputTextFlags.None,
