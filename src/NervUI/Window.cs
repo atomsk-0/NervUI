@@ -16,11 +16,14 @@ public unsafe class GLFWWindow : NativeWindow
 
     private readonly RendererBackend RendererBackend;
 
+    private Application _applicationInstance;
+
     public List<Layer> Layers = new();
 
-    public GLFWWindow(NativeWindowSettings nativeWindowSettings, string? glslVersion, ApplicationOptions options)
+    public GLFWWindow(NativeWindowSettings nativeWindowSettings, string? glslVersion, ApplicationOptions options, Application application)
         : base(nativeWindowSettings)
     {
+        _applicationInstance = application;
         GlslVersion = glslVersion;
         Context.MakeCurrent();
         VSync = VSyncMode.On;
@@ -36,6 +39,17 @@ public unsafe class GLFWWindow : NativeWindow
         io->ConfigFlags |= ImGuiConfigFlags.ViewportsEnable;
 
         ImGui.StyleColorsDark();
+        
+        if (options.DefaultFont != null)
+        {
+            options.DefaultFont.FontData = io->Fonts->AddFontFromFileTTF(options.DefaultFont.FontPath,options.DefaultFont.FontSize);
+            options.DefaultFont.Loaded = true;
+            io->FontDefault = options.DefaultFont.FontData;
+        }
+        
+        io->Fonts->AddFontDefault();
+        RefreshFonts();
+
 
         var style = ImGui.GetStyle();
         
@@ -47,8 +61,21 @@ public unsafe class GLFWWindow : NativeWindow
 
         PlatformBackend = new PlatformBackend(this, true);
         RendererBackend = new RendererBackend(GlslVersion);
+
+        foreach (var layer in Layers)
+            layer.OnWindowLoad();
     }
 
+    public void RefreshFonts()
+    {
+        var io = ImGui.GetIO();
+        foreach (var font in Application.Fonts.Where(c => c.Loaded == false))
+        {
+            font.FontData = io->Fonts->AddFontFromFileTTF(font.FontPath, font.FontSize);
+            font.Loaded = true;
+        }
+            
+    }
     public void Run()
     {
         var io = ImGui.GetIO();
@@ -93,10 +120,25 @@ public unsafe class GLFWWindow : NativeWindow
 
     protected override void Dispose(bool disposing)
     {
+        Layers.Clear();
         RendererBackend.Dispose();
         PlatformBackend.Dispose();
         ImGui.DestroyContext();
 
         base.Dispose(disposing);
+    }
+    
+    protected override void OnFileDrop(FileDropEventArgs e)
+    {
+        foreach (var layer in Layers)
+            layer.OnFileDrop(e);
+        base.OnFileDrop(e);
+    }
+
+    protected override void OnFocusedChanged(FocusedChangedEventArgs e)
+    {
+        foreach (var layer in Layers)
+            layer.OnFocusedChanged(e);
+        base.OnFocusedChanged(e);
     }
 }
