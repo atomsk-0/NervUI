@@ -12,4 +12,10 @@
       <ProjectReference Include="..\..\src\NervUI\NervUI.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Fonts\Roboto-Medium.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

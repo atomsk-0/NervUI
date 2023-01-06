@@ -20,7 +20,12 @@ public class DemoLayer2 : Layer
     public override unsafe void OnUIRender()
     {
         ImGui.Begin("NervUI Demo");
+        
+        //Use other font by using PushFont('FontName')
+        Application.PushFont("Roboto-BlackItalic");
         ImGui.Text("Hello World!");
+        Application.PopFont();//Stop using the font
+
         if (ImGui.Button("Click here!", new Vector2(100, 20)))
         {
             num++;
@@ -43,11 +48,15 @@ internal static class Program
             var options = new ApplicationOptions()
             {
                 Title = "Demo Window",
-                Size = new(1280, 720)
+                Size = new(1280, 720),
+                DefaultFont = new NervFont("Roboto", "Fonts/Roboto-Medium.ttf", 16f)//Set this as new DefaultFont
             };
             
             //Create new instance of the application
             _application = Application.CreateApplication(options);
+            
+            //Add other custom font named as Roboto-BlackItalic
+            _application.AddFont(new NervFont("Roboto-BlackItalic", "Fonts/Roboto-BlackItalic.ttf", 16f));
             
             //Push DemoLayer and DemoLayer2 for the renderer
             _application.PushLayer<DemoLayer>();

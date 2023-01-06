@@ -1,14 +1,17 @@
+using Mochi.DearImGui;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
 namespace NervUI;
 
-public class Application
+public class Application : IDisposable
 {
     public ApplicationOptions Options;
 
     public GLFWWindow Window;
+    
+    internal static List<NervFont> Fonts = new();
 
     private void CreateWindow()
     {
@@ -20,7 +23,7 @@ public class Application
             Profile = ContextProfile.Any,
         };
 
-        Window = new GLFWWindow(nativeWindowSettings, "#version 130", Options);
+        Window = new GLFWWindow(nativeWindowSettings, "#version 130", Options, this);
         Window.CenterWindow();
     }
 
@@ -39,10 +42,45 @@ public class Application
        Layer layer = (Layer)Activator.CreateInstance(typeof(T));
        Window.Layers.Add(layer);
     }
+
+    public static unsafe void PushFont(string fontName)
+    {
+        var font = Fonts.Find(c => c.Name == fontName);
+        if (font == null)
+        {
+            Console.WriteLine($"ERROR: Failed to find font {fontName}. [NervUI]");
+            return;
+        }
+        ImGui.PushFont(font.FontData);
+    }
+
+    public static void SetDefaultFont(string fontName)
+    {
+        
+    }
     
+    public static void PopFont()
+    {
+        ImGui.PopFont();
+    }
+
+    public void AddFont(NervFont font)
+    {
+        Fonts.Add(font);
+        Window.RefreshFonts();
+    }
+
     public void Run() => Window.Run();
 
     public void Exit() => Environment.Exit(0);
+    
+    public void Dispose()
+    {
+        Window.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
+    ~Application() => Dispose();
 }
 
 //TODO ADD CUSTOM FONT SUPPORT
