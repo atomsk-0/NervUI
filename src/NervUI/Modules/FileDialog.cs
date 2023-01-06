@@ -205,6 +205,7 @@ public unsafe class FileDialog
                     _selectedFolder = "";
                     _selectedFile = "";
                     _folderSelectedIndex = 0;
+                    _pathInitialized = false;
                     path = "";
                     _currentPath = "";
                     FileDialogOpen = false;
@@ -213,7 +214,7 @@ public unsafe class FileDialog
                 if (ImGui.Button("Select", new Vector2()))
                 {
                     selectedPath = ok;
-                    
+                    _pathInitialized = false;
                     _fileSelectedIndex = 0;
                     _selectedFolder = "";
                     _selectedFile = "";

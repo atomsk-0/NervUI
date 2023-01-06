@@ -2,6 +2,9 @@
 using Mochi.DearImGui;
 using NervUI;
 using NervUI.Modules;
+using OpenTK.Graphics.OpenGL4;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace DemoWindow;
 

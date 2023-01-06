@@ -127,7 +127,6 @@ public unsafe class GLFWWindow : NativeWindow
                     var dockspace_id = ImGui.GetID("OpenGLAppDockspace");
                     ImGui.DockSpace(dockspace_id, new Vector2(0, 0), dockNodeFlags);
                 }
-
                 if (menuBarCallback != null)
                 {
                     if (ImGui.BeginMenuBar())
