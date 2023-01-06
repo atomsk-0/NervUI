@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using Mochi.DearImGui;
 using NervUI;
+using NervUI.Modules;
 
 namespace DemoWindow;
 
@@ -17,37 +18,34 @@ public class DemoLayer : Layer
 public class DemoLayer2 : Layer
 {
     private int num = 0;
-    private string text = "Hello World!";
-    private string text2 = "";
     public override unsafe void OnUIRender()
     {
         ImGui.Begin("NervUI Demo");
-        
-        //Use other font by using PushFont('FontName')
-        Application.PushFont("Roboto-BlackItalic");
-        ImGui.Text(text);
-        Application.PopFont();//Stop using the font
-        ImGui.SameLine();
-        if (ImGui.Button("Click here!", new Vector2(100, 20)))
         {
-            num++;
+            ImGui.Text($"This button is clicked {num} times.");
+            if (ImGui.Button("Click to increase value", new Vector2()))
+                num++;
         }
-        ImGui.Text($"Button clicked {num} times.");
-        
-        //Use ImGuiManaged class for managed text inputs
-        ImGuiManaged.InputTextWithHint("Input", "Write here something", ref text, 200);
-        ImGuiManaged.InputTextWithHint("##TextInput2", "Write here something", ref text2, 200);
-        
-        ImGui.Text(text2);
-        
         ImGui.End();
     }
 }
+
+public class FileDialogLayer : Layer
+{
+    public override void OnUIRender()
+    {
+        Program.FileDialog.RenderFileDialog();
+    }
+}
+
 
 internal static class Program
 {
     private static Application _application;
     private static bool g_applicationRunning = true;
+
+    public static FileDialog FileDialog = new FileDialog();
+    
     private static void Main()
     {
         //Create main loop for the application
@@ -70,12 +68,28 @@ internal static class Program
             //Push DemoLayer and DemoLayer2 for the renderer
             _application.PushLayer<DemoLayer>();
             _application.PushLayer<DemoLayer2>();
+            _application.PushLayer<FileDialogLayer>();
             
             //Create Menubar for app
             _application.SetMenuBarCallback(() =>
             {
                 if (ImGui.BeginMenu("File"))
                 {
+                    if (ImGuiManaged.MenuItem("Open", ""))
+                    {
+                        FileDialog.path = "C:\\";
+                        FileDialog.FileDialogOpen = true;
+                        
+                        new Thread(() => 
+                        {
+                            while (FileDialog.FileDialogOpen)
+                            {
+                                Thread.Sleep(10);
+                            }
+                            Console.WriteLine(FileDialog.selectedPath);
+                        }).Start();
+                        
+                    }
                     if (ImGuiManaged.MenuItem("Exit", ""))
                     {
                         _application.Exit();

@@ -11,9 +11,9 @@ This project is still in really early stage and supports only x64 currently</Des
         <PackageProjectUrl>https://github.com/byte-0x74/NervUI</PackageProjectUrl>
         <RepositoryUrl>https://github.com/byte-0x74/NervUI</RepositoryUrl>
         <PackageTags>ImGui, UI, UIX, GUI</PackageTags>
-        <PackageReleaseNotes>More events and custom font support.</PackageReleaseNotes>
+        <PackageReleaseNotes>Added FileDialog see from examples how to use it.</PackageReleaseNotes>
         <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-        <Version>1.0.1</Version>
+        <Version>1.0.3</Version>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -38,10 +38,6 @@ This project is still in really early stage and supports only x64 currently</Des
         <Pack>True</Pack>
         <PackagePath></PackagePath>
       </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Modules" />
     </ItemGroup>
 
 </Project>
