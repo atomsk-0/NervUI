@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Runtime.InteropServices;
 using Mochi.DearImGui;
 using NervUI;
 
@@ -34,8 +33,11 @@ public class DemoLayer2 : Layer
             num++;
         }
         ImGui.Text($"Button clicked {num} times.");
+        
+        //Use ImGuiManaged class for managed text inputs
         ImGuiManaged.InputTextWithHint("Input", "Write here something", ref text, 200);
         ImGuiManaged.InputTextWithHint("##TextInput2", "Write here something", ref text2, 200);
+        
         ImGui.Text(text2);
         
         ImGui.End();
@@ -68,6 +70,19 @@ internal static class Program
             //Push DemoLayer and DemoLayer2 for the renderer
             _application.PushLayer<DemoLayer>();
             _application.PushLayer<DemoLayer2>();
+            
+            //Create Menubar for app
+            _application.SetMenuBarCallback(() =>
+            {
+                if (ImGui.BeginMenu("File"))
+                {
+                    if (ImGuiManaged.MenuItem("Exit", ""))
+                    {
+                        _application.Exit();
+                    }
+                    ImGui.EndMenu();
+                }
+            });
 
             //Run application
             _application.Run();
