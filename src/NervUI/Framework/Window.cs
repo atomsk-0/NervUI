@@ -71,11 +71,12 @@ public unsafe class GLFWWindow : NativeWindow
         var io = ImGui.GetIO();
         foreach (var font in Application.Fonts.Where(c => c.Loaded == false))
         {
+            Console.WriteLine("Loaded font " + font.FontPath);
             font.FontData = io->Fonts->AddFontFromFileTTF(font.FontPath, font.FontSize);
             font.Loaded = true;
         }
-            
     }
+    
     public void Run()
     {
         var io = ImGui.GetIO();

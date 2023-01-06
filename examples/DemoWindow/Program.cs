@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Runtime.InteropServices;
 using Mochi.DearImGui;
 using NervUI;
 
@@ -17,20 +18,26 @@ public class DemoLayer : Layer
 public class DemoLayer2 : Layer
 {
     private int num = 0;
+    private string text = "Hello World!";
+    private string text2 = "";
     public override unsafe void OnUIRender()
     {
         ImGui.Begin("NervUI Demo");
         
         //Use other font by using PushFont('FontName')
         Application.PushFont("Roboto-BlackItalic");
-        ImGui.Text("Hello World!");
+        ImGui.Text(text);
         Application.PopFont();//Stop using the font
-
+        ImGui.SameLine();
         if (ImGui.Button("Click here!", new Vector2(100, 20)))
         {
             num++;
         }
         ImGui.Text($"Button clicked {num} times.");
+        ImGuiManaged.InputTextWithHint("Input", "Write here something", ref text, 200);
+        ImGuiManaged.InputTextWithHint("##TextInput2", "Write here something", ref text2, 200);
+        ImGui.Text(text2);
+        
         ImGui.End();
     }
 }
@@ -61,7 +68,7 @@ internal static class Program
             //Push DemoLayer and DemoLayer2 for the renderer
             _application.PushLayer<DemoLayer>();
             _application.PushLayer<DemoLayer2>();
-            
+
             //Run application
             _application.Run();
             
