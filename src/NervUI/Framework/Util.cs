@@ -1,6 +1,7 @@
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
+using Mochi.DearImGui;
 
 namespace NervUI;
 
@@ -72,5 +73,50 @@ internal static unsafe class Util
         {
             return Encoding.UTF8.GetBytes(utf16Ptr + start, length, utf8Bytes, utf8ByteCount);
         }
+    }
+
+    internal static void SetStyle()
+    {
+        ImGuiIO* io = ImGui.GetIO();
+        io->IniFilename = null;
+        ImGuiStyle* style = ImGui.GetStyle();
+        ImGui.StyleColorsDark(style);
+        style->Colors[(int)ImGuiCol.Text]                   = new Vector4(0.84f, 0.84f, 0.84f, 1.00f);
+        style->Colors[(int)ImGuiCol.WindowBg]               = new Vector4(0.22f, 0.22f, 0.22f, 1.00f);
+    style->Colors[(int)ImGuiCol.ChildBg]                = new Vector4(0.19f, 0.19f, 0.19f, 1.00f);
+    style->Colors[(int)ImGuiCol.PopupBg]                = new Vector4(0.09f, 0.09f, 0.09f, 1.00f);
+    style->Colors[(int)ImGuiCol.Border]                 = new Vector4(0.17f, 0.17f, 0.17f, 1.00f);
+    style->Colors[(int)ImGuiCol.BorderShadow]           = new Vector4(0.10f, 0.10f, 0.10f, 0.00f);
+    style->Colors[(int)ImGuiCol.FrameBg]                = new Vector4(0.33f, 0.33f, 0.33f, 1.00f);
+    style->Colors[(int)ImGuiCol.FrameBgHovered]         = new Vector4(0.47f, 0.47f, 0.47f, 1.00f);
+    style->Colors[(int)ImGuiCol.FrameBgActive]          = new Vector4(0.16f, 0.16f, 0.16f, 1.00f);
+    style->Colors[(int)ImGuiCol.TitleBg]                = new Vector4(0.11f, 0.11f, 0.11f, 1.00f);
+    style->Colors[(int)ImGuiCol.TitleBgActive]          = new Vector4(0.16f, 0.16f, 0.16f, 1.00f);
+    style->Colors[(int)ImGuiCol.MenuBarBg]              = new Vector4(0.11f, 0.11f, 0.11f, 1.00f);
+    style->Colors[(int)ImGuiCol.ScrollbarGrab]          = new Vector4(0.33f, 0.33f, 0.33f, 1.00f);
+    style->Colors[(int)ImGuiCol.ScrollbarGrabHovered]   = new Vector4(0.33f, 0.33f, 0.33f, 1.00f);
+    style->Colors[(int)ImGuiCol.ScrollbarGrabActive]    = new Vector4(0.35f, 0.35f, 0.35f, 1.00f);
+    style->Colors[(int)ImGuiCol.CheckMark]              = new Vector4(0.28f, 0.45f, 0.70f, 1.00f);
+    style->Colors[(int)ImGuiCol.SliderGrab]             = new Vector4(0.28f, 0.45f, 0.70f, 1.00f);
+    style->Colors[(int)ImGuiCol.SliderGrabActive]       = new Vector4(0.28f, 0.45f, 0.70f, 1.00f);
+    style->Colors[(int)ImGuiCol.Button]                 = new Vector4(0.33f, 0.33f, 0.33f, 1.00f);
+    style->Colors[(int)ImGuiCol.ButtonHovered]          = new Vector4(0.40f, 0.40f, 0.40f, 1.00f);
+    style->Colors[(int)ImGuiCol.ButtonActive]           = new Vector4(0.28f, 0.45f, 0.70f, 1.00f);
+    style->Colors[(int)ImGuiCol.Header]                 = new Vector4(0.27f, 0.27f, 0.27f, 1.00f);
+    style->Colors[(int)ImGuiCol.HeaderHovered]          = new Vector4(0.28f, 0.45f, 0.70f, 1.00f);
+    style->Colors[(int)ImGuiCol.HeaderActive]           = new Vector4(0.27f, 0.27f, 0.27f, 1.00f);
+    style->Colors[(int)ImGuiCol.Separator]              = new Vector4(0.18f, 0.18f, 0.18f, 1.00f);
+    style->Colors[(int)ImGuiCol.SeparatorHovered]       = new Vector4(0.28f, 0.45f, 0.70f, 1.00f);
+    style->Colors[(int)ImGuiCol.SeparatorActive]        = new Vector4(0.28f, 0.45f, 0.70f, 1.00f);
+    style->Colors[(int)ImGuiCol.ResizeGrip]             = new Vector4(0.54f, 0.54f, 0.54f, 1.00f);
+    style->Colors[(int)ImGuiCol.ResizeGripHovered]      = new Vector4(0.28f, 0.45f, 0.70f, 1.00f);
+    style->Colors[(int)ImGuiCol.ResizeGripActive]       = new Vector4(0.19f, 0.39f, 0.69f, 1.00f);
+    style->Colors[(int)ImGuiCol.Tab]                    = new Vector4(0.11f, 0.11f, 0.11f, 1.00f);
+    style->Colors[(int)ImGuiCol.TabHovered]             = new Vector4(0.14f, 0.14f, 0.14f, 1.00f);
+    style->Colors[(int)ImGuiCol.TabActive]              = new Vector4(0.19f, 0.19f, 0.19f, 1.00f);
+    style->Colors[(int)ImGuiCol.PlotHistogram]          = new Vector4(0.28f, 0.45f, 0.70f, 1.00f);
+    style->Colors[(int)ImGuiCol.PlotHistogramHovered]   = new Vector4(0.20f, 0.39f, 0.69f, 1.00f);
+    style->Colors[(int)ImGuiCol.TextSelectedBg]         = new Vector4(0.28f, 0.45f, 0.70f, 1.00f);
+    style->Colors[(int)ImGuiCol.NavHighlight]           = new Vector4(0.28f, 0.45f, 0.70f, 1.00f);
     }
 }

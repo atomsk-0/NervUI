@@ -38,6 +38,9 @@ public unsafe class GLFWWindow : NativeWindow
         ImGui.CHECKVERSION();
         ImGui.CreateContext();
         var io = ImGui.GetIO();
+        
+       // Util.SetStyle();
+
 
         if (!options.DisableDocking)
             io->ConfigFlags |= ImGuiConfigFlags.DockingEnable;
@@ -45,8 +48,9 @@ public unsafe class GLFWWindow : NativeWindow
         io->ConfigFlags |= ImGuiConfigFlags.NavEnableKeyboard;
         io->ConfigFlags |= ImGuiConfigFlags.ViewportsEnable;
 
-        ImGui.StyleColorsDark();
 
+
+        
         if (options.DefaultFont != null)
         {
             options.DefaultFont.FontData =
@@ -60,16 +64,19 @@ public unsafe class GLFWWindow : NativeWindow
 
 
         var style = ImGui.GetStyle();
+        Util.SetStyle();
 
         if (io->ConfigFlags.HasFlag(ImGuiConfigFlags.ViewportsEnable))
         {
-            style->WindowRounding = 0f;
+            style->WindowRounding = 1f;
             style->Colors[(int)ImGuiCol.WindowBg].W = 1f;
         }
 
         PlatformBackend = new PlatformBackend(this, true);
         RendererBackend = new RendererBackend(GlslVersion);
 
+
+        
         foreach (var layer in Layers)
             layer.OnWindowLoad();
     }
