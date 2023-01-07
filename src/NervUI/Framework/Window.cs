@@ -12,6 +12,7 @@ namespace NervUI;
 
 public unsafe class GLFWWindow : NativeWindow
 {
+    private static bool firstTime = true;
     private readonly string? GlslVersion;
 
     private readonly PlatformBackend PlatformBackend;
@@ -20,11 +21,11 @@ public unsafe class GLFWWindow : NativeWindow
 
     private Application _applicationInstance;
 
+    internal Action<uint, ImGuiDockNodeFlags> dockSpaceCallback;
+
     public List<Layer> Layers = new();
 
     internal Action menuBarCallback;
-
-    internal Action<uint, ImGuiDockNodeFlags> dockSpaceCallback;
 
     public GLFWWindow(NativeWindowSettings nativeWindowSettings, string? glslVersion, ApplicationOptions options,
         Application application)
@@ -38,8 +39,8 @@ public unsafe class GLFWWindow : NativeWindow
         ImGui.CHECKVERSION();
         ImGui.CreateContext();
         var io = ImGui.GetIO();
-        
-       // Util.SetStyle();
+
+        // Util.SetStyle();
 
 
         if (!options.DisableDocking)
@@ -49,8 +50,6 @@ public unsafe class GLFWWindow : NativeWindow
         io->ConfigFlags |= ImGuiConfigFlags.ViewportsEnable;
 
 
-
-        
         if (options.DefaultFont != null)
         {
             options.DefaultFont.FontData =
@@ -76,7 +75,6 @@ public unsafe class GLFWWindow : NativeWindow
         RendererBackend = new RendererBackend(GlslVersion);
 
 
-        
         foreach (var layer in Layers)
             layer.OnWindowLoad();
     }
@@ -92,7 +90,6 @@ public unsafe class GLFWWindow : NativeWindow
         }
     }
 
-    private static bool firstTime = true;
     public void Run()
     {
         var io = ImGui.GetIO();
@@ -105,7 +102,7 @@ public unsafe class GLFWWindow : NativeWindow
         while (!GLFW.WindowShouldClose(WindowPtr))
         {
             ProcessEvents();
-            
+
             RendererBackend.NewFrame();
             PlatformBackend.NewFrame();
             ImGui.NewFrame();
@@ -146,11 +143,11 @@ public unsafe class GLFWWindow : NativeWindow
                     if (firstTime)
                     {
                         firstTime = false;
-                        
+
                         ImGuiInternal.DockBuilderRemoveNode(dockspace_id);
                         ImGuiInternal.DockBuilderAddNode(dockspace_id, dockNodeFlags);
                         ImGuiInternal.DockBuilderSetNodeSize(dockspace_id, viewport->Size);
-                        
+
                         if (dockSpaceCallback != null)
                             dockSpaceCallback(dockspace_id, dockNodeFlags);
                     }

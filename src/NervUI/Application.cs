@@ -70,7 +70,7 @@ public class Application : IDisposable
     {
         Window.menuBarCallback = action;
     }
-    
+
     public void SetDockspaceCallback(Action<uint, ImGuiDockNodeFlags> action)
     {
         Window.dockSpaceCallback = action;
