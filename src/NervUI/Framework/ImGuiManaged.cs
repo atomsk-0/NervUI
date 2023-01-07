@@ -705,7 +705,7 @@ public class ImGuiManaged
         Unsafe.InitBlockUnaligned(utf8InputBytes + utf8InputByteCount, 0, clearBytesCount);
         Unsafe.CopyBlock(originalUtf8InputBytes, utf8InputBytes, (uint)inputBufSize);
 
-        var result = ImGui.InputTextMultiline(utf8LabelBytes, utf8LabelBytes, (nuint)inputBufSize,
+        var result = ImGui.InputTextMultiline(utf8LabelBytes, utf8InputBytes, (nuint)inputBufSize,
             new System.Numerics.Vector2(size.X, size.Y), flags, callback, user_data);
 
         if (!Util.AreStringsEqual(originalUtf8InputBytes, inputBufSize, utf8InputBytes))
