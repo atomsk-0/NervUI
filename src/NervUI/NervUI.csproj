@@ -10,10 +10,10 @@ This project is still in really early stage and supports only x64 currently</Des
         <Copyright></Copyright>
         <PackageProjectUrl>https://github.com/byte-0x74/NervUI</PackageProjectUrl>
         <RepositoryUrl>https://github.com/byte-0x74/NervUI</RepositoryUrl>
-        <PackageTags>ImGui, UI, UIX, GUI</PackageTags>
-        <PackageReleaseNotes>Fixed FileDialog crash if re open and made it better see from sample project how to use it.</PackageReleaseNotes>
+        <PackageTags>ImGui, UI, UIX, GUI, Framework</PackageTags>
+        <PackageReleaseNotes>Fixed bugs, Added MessageBox, Added TrayIcon support added error output to FileDialog</PackageReleaseNotes>
         <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-        <Version>1.0.4</Version>
+        <Version>1.0.5</Version>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -27,6 +27,7 @@ This project is still in really early stage and supports only x64 currently</Des
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="ManagedBass" Version="3.1.1" />
         <PackageReference Include="Mochi.DearImGui" Version="0.0.2" />
         <PackageReference Include="Mochi.DearImGui.OpenTK" Version="0.0.2" />
         <PackageReference Include="NotifyIcon.Windows" Version="1.1.0" />
@@ -39,6 +40,9 @@ This project is still in really early stage and supports only x64 currently</Des
       <None Update="nerv.png">
         <Pack>True</Pack>
         <PackagePath></PackagePath>
+      </None>
+      <None Update="bass.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

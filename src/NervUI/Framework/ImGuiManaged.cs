@@ -2,6 +2,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Mochi.DearImGui;
+using Mochi.DearImGui.Internal;
 using OpenTK.Graphics.OpenGL;
 using Vector2 = OpenTK.Mathematics.Vector2;
 

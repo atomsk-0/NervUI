@@ -1,4 +1,5 @@
 using Mochi.DearImGui;
+using NervUI.Modules;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -33,6 +34,7 @@ public class Application : IDisposable
 
     public static Application CreateApplication(ApplicationOptions options)
     {
+        Audio.Init();
         var application = new Application();
 
         application.Options = options;
