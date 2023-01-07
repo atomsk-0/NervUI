@@ -9,13 +9,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\NervUI\NervUI.csproj" />
+        <ProjectReference Include="..\..\src\NervUI\NervUI.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Fonts\Roboto-Medium.ttf">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+        <None Update="Fonts\Roboto-Medium.ttf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

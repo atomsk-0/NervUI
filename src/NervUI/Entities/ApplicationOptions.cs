@@ -10,7 +10,7 @@ public struct ApplicationOptions
     public bool DisableDocking { get; set; }
     public WindowBorder WindowBorder { get; set; }
     public WindowState WindowState { get; set; }
-    
+
     public NervFont DefaultFont { get; set; }
 
     public ApplicationOptions()

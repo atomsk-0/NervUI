@@ -1,10 +1,10 @@
 using System.Numerics;
 using Mochi.DearImGui;
+using Mochi.DearImGui.Internal;
 using Mochi.DearImGui.OpenTK;
 using NervUI.Modules;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Common.Input;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -12,19 +12,23 @@ namespace NervUI;
 
 public unsafe class GLFWWindow : NativeWindow
 {
+    private static bool firstTime = true;
     private readonly string? GlslVersion;
 
     private readonly PlatformBackend PlatformBackend;
 
     private readonly RendererBackend RendererBackend;
 
-    internal Action menuBarCallback;
-
     private Application _applicationInstance;
+
+    internal Action<uint, ImGuiDockNodeFlags> dockSpaceCallback;
 
     public List<Layer> Layers = new();
 
-    public GLFWWindow(NativeWindowSettings nativeWindowSettings, string? glslVersion, ApplicationOptions options, Application application)
+    internal Action menuBarCallback;
+
+    public GLFWWindow(NativeWindowSettings nativeWindowSettings, string? glslVersion, ApplicationOptions options,
+        Application application)
         : base(nativeWindowSettings)
     {
         _applicationInstance = application;
@@ -35,36 +39,41 @@ public unsafe class GLFWWindow : NativeWindow
         ImGui.CHECKVERSION();
         ImGui.CreateContext();
         var io = ImGui.GetIO();
-        
+
+        // Util.SetStyle();
+
+
         if (!options.DisableDocking)
             io->ConfigFlags |= ImGuiConfigFlags.DockingEnable;
-        
+
         io->ConfigFlags |= ImGuiConfigFlags.NavEnableKeyboard;
         io->ConfigFlags |= ImGuiConfigFlags.ViewportsEnable;
 
-        ImGui.StyleColorsDark();
-        
+
         if (options.DefaultFont != null)
         {
-            options.DefaultFont.FontData = io->Fonts->AddFontFromFileTTF(options.DefaultFont.FontPath,options.DefaultFont.FontSize);
+            options.DefaultFont.FontData =
+                io->Fonts->AddFontFromFileTTF(options.DefaultFont.FontPath, options.DefaultFont.FontSize);
             options.DefaultFont.Loaded = true;
             io->FontDefault = options.DefaultFont.FontData;
         }
-        
+
         io->Fonts->AddFontDefault();
         RefreshFonts();
 
 
         var style = ImGui.GetStyle();
-        
+        Util.SetStyle();
+
         if (io->ConfigFlags.HasFlag(ImGuiConfigFlags.ViewportsEnable))
         {
-            style->WindowRounding = 0f;
+            style->WindowRounding = 1f;
             style->Colors[(int)ImGuiCol.WindowBg].W = 1f;
         }
 
         PlatformBackend = new PlatformBackend(this, true);
         RendererBackend = new RendererBackend(GlslVersion);
+
 
         foreach (var layer in Layers)
             layer.OnWindowLoad();
@@ -80,7 +89,7 @@ public unsafe class GLFWWindow : NativeWindow
             font.Loaded = true;
         }
     }
-    
+
     public void Run()
     {
         var io = ImGui.GetIO();
@@ -99,15 +108,16 @@ public unsafe class GLFWWindow : NativeWindow
             ImGui.NewFrame();
             FileDialog.RenderFileDialog();
             {
-                ImGuiDockNodeFlags dockNodeFlags = ImGuiDockNodeFlags.None;
+                var dockNodeFlags = ImGuiDockNodeFlags.None;
 
-                ImGuiWindowFlags windowFlags = ImGuiWindowFlags.NoDocking;
+                var windowFlags = ImGuiWindowFlags.NoDocking;
 
                 if (menuBarCallback != null)
                     windowFlags |= ImGuiWindowFlags.MenuBar;
 
-                ImGuiViewport* viewport = ImGui.GetMainViewport();
-                ImGui.SetNextWindowPos(new Vector2(viewport->WorkPos.X, viewport->WorkPos.Y), ImGuiCond.None, new Vector2(0, 0));
+                var viewport = ImGui.GetMainViewport();
+                ImGui.SetNextWindowPos(new Vector2(viewport->WorkPos.X, viewport->WorkPos.Y), ImGuiCond.None,
+                    new Vector2(0, 0));
                 ImGui.SetNextWindowSize(viewport->WorkSize);
                 ImGui.SetNextWindowViewport(viewport->ID);
 
@@ -117,12 +127,11 @@ public unsafe class GLFWWindow : NativeWindow
 
                 if (dockNodeFlags.HasFlag(ImGuiDockNodeFlags.PassthruCentralNode))
                     windowFlags |= ImGuiWindowFlags.NoBackground;
-                
-                
+
+
                 ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
                 ImGui.Begin("NervUI Dockspace", null, windowFlags);
                 ImGui.PopStyleVar();
-
 
 
                 var iox = ImGui.GetIO();
@@ -130,26 +139,36 @@ public unsafe class GLFWWindow : NativeWindow
                 {
                     var dockspace_id = ImGui.GetID("OpenGLAppDockspace");
                     ImGui.DockSpace(dockspace_id, new Vector2(0, 0), dockNodeFlags);
+
+                    if (firstTime)
+                    {
+                        firstTime = false;
+
+                        ImGuiInternal.DockBuilderRemoveNode(dockspace_id);
+                        ImGuiInternal.DockBuilderAddNode(dockspace_id, dockNodeFlags);
+                        ImGuiInternal.DockBuilderSetNodeSize(dockspace_id, viewport->Size);
+
+                        if (dockSpaceCallback != null)
+                            dockSpaceCallback(dockspace_id, dockNodeFlags);
+                    }
                 }
+
                 if (menuBarCallback != null)
-                {
                     if (ImGui.BeginMenuBar())
                     {
                         menuBarCallback();
                         ImGui.EndMenuBar();
                     }
-                }
 
                 if (MessageBox.showMB)
                 {
                     ImGui.OpenPopup("MessageBoxPopup");
                     MessageBox.RenderMessageBox();
                 }
-
             }
             //RENDER IMGUI HERE
 
-            
+
             foreach (var layer in Layers)
                 layer.OnUIRender();
             {
@@ -182,7 +201,7 @@ public unsafe class GLFWWindow : NativeWindow
 
         base.Dispose(disposing);
     }
-    
+
     protected override void OnFileDrop(FileDropEventArgs e)
     {
         foreach (var layer in Layers)

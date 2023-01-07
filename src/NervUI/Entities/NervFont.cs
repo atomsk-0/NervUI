@@ -4,16 +4,6 @@ namespace NervUI;
 
 public unsafe class NervFont
 {
-    public string Name { get; set; }
-    
-    public string FontPath { get; set; }
-    
-    public float FontSize { get; set; }
-    
-    public ImFont* FontData { get; set; }
-    
-    public NervFont DefaultFont { get; set; }
-
     internal bool Loaded = false;
 
     public NervFont(string name, string fontPath, float fontSize, NervFont defaultFont = null)
@@ -23,4 +13,14 @@ public unsafe class NervFont
         FontSize = fontSize;
         DefaultFont = defaultFont;
     }
+
+    public string Name { get; set; }
+
+    public string FontPath { get; set; }
+
+    public float FontSize { get; set; }
+
+    public ImFont* FontData { get; set; }
+
+    public NervFont DefaultFont { get; set; }
 }
