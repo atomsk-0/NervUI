@@ -1,14 +1,81 @@
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Mochi.DearImGui;
-using OpenTK.Mathematics;
+using OpenTK.Graphics.OpenGL;
+using Vector2 = OpenTK.Mathematics.Vector2;
 
 namespace NervUI;
 
 public class ImGuiManaged
 {
-    //TODO ADD OTHER THINGS HERE LIKE NORMAL InputText and MultiLine version
+    #if false
+    //Disabled
+    public unsafe static void Image(NervImage image)
+    {
+        if (image == null)
+            return;
+        GL.BindTexture(TextureTarget.Texture2D, image.texture);
+        
+        ImGui.Image((void*)image.texture, new System.Numerics.Vector2(image.Width, image.Height),
+            new System.Numerics.Vector2(), new System.Numerics.Vector2(1, 1), new Vector4(1, 1, 1, 1), new Vector4());
+    }
+#endif
 
+    public static unsafe void TextWrapped(string fmt)
+    {
+        byte* native_fmt;
+        int fmt_byteCount = 0;
+        if (fmt != null)
+        {
+            fmt_byteCount = Encoding.UTF8.GetByteCount(fmt);
+            if (fmt_byteCount > Util.StackAllocationSizeLimit)
+            {
+                native_fmt = Util.Allocate(fmt_byteCount + 1);
+            }
+            else
+            {
+                byte* native_fmt_stackBytes = stackalloc byte[fmt_byteCount + 1];
+                native_fmt = native_fmt_stackBytes;
+            }
+            int native_fmt_offset = Util.GetUtf8(fmt, native_fmt, fmt_byteCount);
+            native_fmt[native_fmt_offset] = 0;
+        }
+        else { native_fmt = null; }
+        ImGui.TextWrapped(fmt);
+        if (fmt_byteCount > Util.StackAllocationSizeLimit)
+        {
+            Util.Free(native_fmt);
+        }
+    }
+    
+    public static unsafe void TextColored(Vector4 col, string fmt)
+    {
+        byte* native_fmt;
+        int fmt_byteCount = 0;
+        if (fmt != null)
+        {
+            fmt_byteCount = Encoding.UTF8.GetByteCount(fmt);
+            if (fmt_byteCount > Util.StackAllocationSizeLimit)
+            {
+                native_fmt = Util.Allocate(fmt_byteCount + 1);
+            }
+            else
+            {
+                byte* native_fmt_stackBytes = stackalloc byte[fmt_byteCount + 1];
+                native_fmt = native_fmt_stackBytes;
+            }
+            int native_fmt_offset = Util.GetUtf8(fmt, native_fmt, fmt_byteCount);
+            native_fmt[native_fmt_offset] = 0;
+        }
+        else { native_fmt = null; }
+        ImGui.TextColored(col, native_fmt);
+        if (fmt_byteCount > Util.StackAllocationSizeLimit)
+        {
+            Util.Free(native_fmt);
+        }
+    }
+    
     public static bool MenuItem(string label, string shortcut)
     {
         unsafe

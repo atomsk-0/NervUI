@@ -1,3 +1,4 @@
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -7,6 +8,15 @@ internal static unsafe class Util
 {
     internal const int StackAllocationSizeLimit = 2048;
 
+    public static Vector4 Vec_Color(int r, int g, int b, int a = 255)
+    {
+        return new Vector4(
+            r / 255.0f,
+            g / 255.0f,
+            b / 255.0f,
+            a / 255.0f);
+    }
+    
     public static string StringFromPtr(byte* ptr)
     {
         int characters = 0;

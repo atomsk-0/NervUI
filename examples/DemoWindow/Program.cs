@@ -1,11 +1,9 @@
-﻿using System.Numerics;
+﻿using System.Drawing;
+using System.Numerics;
+using System.Windows;
 using Mochi.DearImGui;
 using NervUI;
 using NervUI.Modules;
-using OpenTK.Graphics.OpenGL4;
-using OpenTK.Windowing.Common;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-
 namespace DemoWindow;
 
 //Layers are to help keep the imgui code cleaner so you can create new class for each imgui part you want.
@@ -27,17 +25,15 @@ public class DemoLayer2 : Layer
         {
             ImGui.Text($"This button is clicked {num} times.");
             if (ImGui.Button("Click to increase value", new Vector2()))
+            {
                 num++;
+            }
+            if (ImGui.Button("MessageBox example", new Vector2()))
+            {
+                MessageBox.ShowMessageBox("Hello World", "Test");
+            }
         }
         ImGui.End();
-    }
-}
-
-public class FileDialogLayer : Layer
-{
-    public override void OnUIRender()
-    {
-        Program.FileDialog.RenderFileDialog();
     }
 }
 
@@ -47,10 +43,11 @@ internal static class Program
     private static Application _application;
     private static bool g_applicationRunning = true;
 
-    public static FileDialog FileDialog = new FileDialog();
+    public static string imageLocation = "";
     
     private static void Main()
     {
+        NotifyIconExample();
         //Create main loop for the application
         while (g_applicationRunning)
         {
@@ -59,7 +56,7 @@ internal static class Program
             {
                 Title = "NervUI Demo Window",
                 Size = new(1280, 720),
-                DefaultFont = new NervFont("Roboto", "Fonts/Roboto-Medium.ttf", 16f)//Set this as new DefaultFont
+                DefaultFont = new NervFont("Roboto", "Fonts/Roboto-Medium.ttf", 16f),//Set this as new DefaultFont
             };
             
             //Create new instance of the application
@@ -71,8 +68,7 @@ internal static class Program
             //Push DemoLayer and DemoLayer2 for the renderer
             _application.PushLayer<DemoLayer>();
             _application.PushLayer<DemoLayer2>();
-            _application.PushLayer<FileDialogLayer>();
-            
+
             //Create Menubar for app
             _application.SetMenuBarCallback(() =>
             {
@@ -82,10 +78,13 @@ internal static class Program
                     {
                         FileDialog.ShowFileDialog("C:\\", FileDialogType.OpenFile, delegate(string s)
                         {
-                            //Prints the selected path/file location
                             Console.WriteLine(s);
+                            //Prints the selected path/file location
                         });
-
+                    }
+                    if (ImGuiManaged.MenuItem("MessageBox", ""))
+                    {
+                        MessageBox.ShowMessageBox("Hello World", "Test");
                     }
                     if (ImGuiManaged.MenuItem("Exit", ""))
                     {
@@ -102,5 +101,20 @@ internal static class Program
         }
         
         _application.Exit();
+    }
+
+    private static NotifyIcon _notifyIcon;
+    private static void NotifyIconExample()
+    {
+        _notifyIcon = NotifyIcon.Create();
+        //_notifyIcon.Icon = new Bitmap("path to icon");
+        _notifyIcon.Text = "NervUI Example";
+        ContextMenuStrip.MenuItem menuItem = new ContextMenuStrip.MenuItem();
+        menuItem.Text = "Exit";
+        menuItem.Visible = true;
+        menuItem.Click += (sender, args) => _application.Exit();
+        _notifyIcon.ContextMenuStrip.Items.Add(menuItem);
+        _notifyIcon.Visible = true;
+        _notifyIcon.ShowBalloonTip("Hello", "test", ToolTipIcon.Info);
     }
 }
