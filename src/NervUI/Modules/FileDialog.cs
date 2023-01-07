@@ -45,6 +45,21 @@ public unsafe class FileDialog
 
     private string newFolderName = "";
 
+    public void ShowFileDialog(string path, FileDialogType type, Action<string> action)
+    {
+        this.path = path;
+        this.FileDialogType = type;
+        FileDialogOpen = true;
+        new Thread(() =>
+        {
+            while (FileDialogOpen == true)
+            {
+                Thread.Sleep(10);
+            }
+            action(selectedPath);
+        }).Start();
+    }
+
     public void RenderFileDialog()
     {
         if (FileDialogOpen)
@@ -205,6 +220,7 @@ public unsafe class FileDialog
                     _selectedFolder = "";
                     _selectedFile = "";
                     _folderSelectedIndex = 0;
+                    _pathInitialized = false;
                     path = "";
                     _currentPath = "";
                     FileDialogOpen = false;
@@ -213,7 +229,7 @@ public unsafe class FileDialog
                 if (ImGui.Button("Select", new Vector2()))
                 {
                     selectedPath = ok;
-                    
+                    _pathInitialized = false;
                     _fileSelectedIndex = 0;
                     _selectedFolder = "";
                     _selectedFile = "";

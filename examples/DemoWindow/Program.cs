@@ -2,6 +2,9 @@
 using Mochi.DearImGui;
 using NervUI;
 using NervUI.Modules;
+using OpenTK.Graphics.OpenGL4;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace DemoWindow;
 
@@ -77,18 +80,12 @@ internal static class Program
                 {
                     if (ImGuiManaged.MenuItem("Open", ""))
                     {
-                        FileDialog.path = "C:\\";
-                        FileDialog.FileDialogOpen = true;
-                        
-                        new Thread(() => 
+                        FileDialog.ShowFileDialog("C:\\", FileDialogType.OpenFile, delegate(string s)
                         {
-                            while (FileDialog.FileDialogOpen)
-                            {
-                                Thread.Sleep(10);
-                            }
-                            Console.WriteLine(FileDialog.selectedPath);
-                        }).Start();
-                        
+                            //Prints the selected path/file location
+                            Console.WriteLine(s);
+                        });
+
                     }
                     if (ImGuiManaged.MenuItem("Exit", ""))
                     {

@@ -3,6 +3,7 @@ using Mochi.DearImGui;
 using Mochi.DearImGui.OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Common.Input;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -127,7 +128,6 @@ public unsafe class GLFWWindow : NativeWindow
                     var dockspace_id = ImGui.GetID("OpenGLAppDockspace");
                     ImGui.DockSpace(dockspace_id, new Vector2(0, 0), dockNodeFlags);
                 }
-
                 if (menuBarCallback != null)
                 {
                     if (ImGui.BeginMenuBar())

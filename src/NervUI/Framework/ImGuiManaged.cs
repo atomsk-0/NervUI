@@ -300,7 +300,7 @@ public class ImGuiManaged
             {
                 native_shortcut = null;
             }
-
+            
             var native_p_selected_val = p_selected ? (byte)1 : (byte)0;
             var native_p_selected = &native_p_selected_val;
             var native_enabled = enabled ? (byte)1 : (byte)0;
