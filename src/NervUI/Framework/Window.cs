@@ -1,6 +1,7 @@
 using System.Numerics;
 using Mochi.DearImGui;
 using Mochi.DearImGui.OpenTK;
+using NervUI.Modules;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Common.Input;
@@ -96,7 +97,7 @@ public unsafe class GLFWWindow : NativeWindow
             RendererBackend.NewFrame();
             PlatformBackend.NewFrame();
             ImGui.NewFrame();
-
+            FileDialog.RenderFileDialog();
             {
                 ImGuiDockNodeFlags dockNodeFlags = ImGuiDockNodeFlags.None;
 
@@ -122,6 +123,8 @@ public unsafe class GLFWWindow : NativeWindow
                 ImGui.Begin("NervUI Dockspace", null, windowFlags);
                 ImGui.PopStyleVar();
 
+
+
                 var iox = ImGui.GetIO();
                 if (io->ConfigFlags.HasFlag(ImGuiConfigFlags.DockingEnable))
                 {
@@ -136,11 +139,19 @@ public unsafe class GLFWWindow : NativeWindow
                         ImGui.EndMenuBar();
                     }
                 }
+
+                if (MessageBox.showMB)
+                {
+                    ImGui.OpenPopup("MessageBoxPopup");
+                    MessageBox.RenderMessageBox();
+                }
+
             }
             //RENDER IMGUI HERE
+
+            
             foreach (var layer in Layers)
                 layer.OnUIRender();
-
             {
                 ImGui.Render();
                 GLFW.GetFramebufferSize(WindowPtr, out var displayW, out var displayH);

@@ -11,9 +11,9 @@ This project is still in really early stage and supports only x64 currently</Des
         <PackageProjectUrl>https://github.com/byte-0x74/NervUI</PackageProjectUrl>
         <RepositoryUrl>https://github.com/byte-0x74/NervUI</RepositoryUrl>
         <PackageTags>ImGui, UI, UIX, GUI</PackageTags>
-        <PackageReleaseNotes>Added FileDialog see from examples how to use it.</PackageReleaseNotes>
+        <PackageReleaseNotes>Fixed FileDialog crash if re open and made it better see from sample project how to use it.</PackageReleaseNotes>
         <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-        <Version>1.0.3</Version>
+        <Version>1.0.4</Version>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -29,7 +29,10 @@ This project is still in really early stage and supports only x64 currently</Des
     <ItemGroup>
         <PackageReference Include="Mochi.DearImGui" Version="0.0.2" />
         <PackageReference Include="Mochi.DearImGui.OpenTK" Version="0.0.2" />
+        <PackageReference Include="NotifyIcon.Windows" Version="1.1.0" />
         <PackageReference Include="OpenTK" Version="4.7.5" />
+        <PackageReference Include="StbImageSharp" Version="2.27.13" />
+        <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>

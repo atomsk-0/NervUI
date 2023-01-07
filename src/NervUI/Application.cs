@@ -66,6 +66,7 @@ public class Application : IDisposable
     public static void PopFont()
     {
         ImGui.PopFont();
+        
     }
 
     public void AddFont(NervFont font)

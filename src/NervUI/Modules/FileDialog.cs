@@ -18,37 +18,39 @@ public enum FileDialogSortOrder
 
 public unsafe class FileDialog
 {
-    public bool FileDialogOpen = false;
-    public FileDialogType FileDialogType = FileDialogType.OpenFile;
-    public string path = "C:\\";
+    private static bool FileDialogOpen = false;
+    private static FileDialogType FileDialogType = FileDialogType.OpenFile;
+    private static string path = "C:\\";
 
-    public string selectedPath = "";
+    private static string selectedPath = "";
 
-    private bool _pathInitialized = false;
+    private static bool _pathInitialized = false;
 
-    private string _currentPath = "";
+    private static string _currentPath = "";
 
-    private string _selectedFile = "";
-    private string _selectedFolder = "";
+    private static string _selectedFile = "";
+    private static string _selectedFolder = "";
 
-    private int _folderSelectedIndex = 0;
-    private int _fileSelectedIndex = 0;
+    private static int _folderSelectedIndex = 0;
+    private static int _fileSelectedIndex = 0;
+
+    private static string _errorPopStr = "";
     
-    private float initial_spacing_column_0 = 230.0f;
-    private float initial_spacing_column_1 = 80.0f;
-    private float initial_spacing_column_2 = 80.0f;
+    private static float initial_spacing_column_0 = 230.0f;
+    private static float initial_spacing_column_1 = 80.0f;
+    private static float initial_spacing_column_2 = 80.0f;
     
-    private FileDialogSortOrder file_name_sort_order = FileDialogSortOrder.None;
-    private FileDialogSortOrder size_sort_order = FileDialogSortOrder.None;
-    private FileDialogSortOrder date_sort_order = FileDialogSortOrder.None;
-    private FileDialogSortOrder type_sort_order = FileDialogSortOrder.None;
+    private static FileDialogSortOrder file_name_sort_order = FileDialogSortOrder.None;
+    private static FileDialogSortOrder size_sort_order = FileDialogSortOrder.None;
+    private static FileDialogSortOrder date_sort_order = FileDialogSortOrder.None;
+    private static FileDialogSortOrder type_sort_order = FileDialogSortOrder.None;
 
-    private string newFolderName = "";
+    private static string newFolderName = "";
 
-    public void ShowFileDialog(string path, FileDialogType type, Action<string> action)
+    public static void ShowFileDialog(string _path, FileDialogType type, Action<string> action)
     {
-        this.path = path;
-        this.FileDialogType = type;
+        path = _path;
+        FileDialogType = type;
         FileDialogOpen = true;
         new Thread(() =>
         {
@@ -59,8 +61,8 @@ public unsafe class FileDialog
             action(selectedPath);
         }).Start();
     }
-
-    public void RenderFileDialog()
+    
+    internal static void RenderFileDialog()
     {
         if (FileDialogOpen)
         {
@@ -73,15 +75,28 @@ public unsafe class FileDialog
             bool* na = null;
 
             string window_title = (FileDialogType == FileDialogType.OpenFile ? "Select a file" : "Select a folder");
-            
-            string[] files = Directory.GetFiles(_currentPath);
-            string[] folders = Directory.GetDirectories(_currentPath);
+
+            string[] files = null;
+            string[] folders = null;
+            try
+            {
+               files = Directory.GetFiles(_currentPath);
+                folders = Directory.GetDirectories(_currentPath);
+            }
+            catch (Exception e)
+            {
+                _errorPopStr = e.Message;
+                ImGui.OpenPopup("ErrorPopUp");
+            }
+
             
             ImGui.SetNextWindowSize(new Vector2(740, 420));
             ImGui.Begin(window_title, na, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoDocking);
             {
                 ImGui.Text(_currentPath);
-            
+
+                #region Directories
+
                 ImGui.BeginChild("Directories##1", new Vector2(200, 300), true, ImGuiWindowFlags.HorizontalScrollbar);
                 {
                     if (ImGuiManaged.Selectable("..", false, ImGuiSelectableFlags.AllowDoubleClick,
@@ -116,10 +131,12 @@ public unsafe class FileDialog
                     }
                 }
                 ImGui.EndChild();
-                
-                ImGui.SameLine();
 
-                ImGui.BeginChild("Files##1", new Vector2(516, 300), true, ImGuiWindowFlags.HorizontalScrollbar);
+                #endregion
+                ImGui.SameLine();
+                #region Files
+
+                                ImGui.BeginChild("Files##1", new Vector2(516, 300), true, ImGuiWindowFlags.HorizontalScrollbar);
                 {
                     ImGui.Columns(4);
                     if (initial_spacing_column_0 > 0)
@@ -187,10 +204,11 @@ public unsafe class FileDialog
                     }
                 }
                 ImGui.EndChild();
-                
+
+                #endregion
+
                 ImGui.PushItemWidth(724);
                 string ok = (_selectedFolder.Length > 0 ? _selectedFolder : _selectedFile);
-                //string ok = (file_dialog_current_folder.size() > 0 ? file_dialog_current_folder : file_dialog_current_file);
                 ImGuiManaged.InputText("##text", ref ok, 999, ImGuiInputTextFlags.ReadOnly);
                 
                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 6);
@@ -199,21 +217,41 @@ public unsafe class FileDialog
                     ImGui.OpenPopup("NewFolderPopup");
                 }
                 ImGui.SameLine();
+
                 if (ImGui.Button("Delete", new Vector2()))
                 {
                     if (File.Exists(ok))
                     {
-                        _selectedFile = "";
-                        File.Delete(ok);
+                        try
+                        {
+                            File.Delete(ok);
+                            _selectedFile = "";
+                        }
+                        catch (Exception e)
+                        {
+                            _errorPopStr = e.Message;
+                            ImGui.OpenPopup("FileDialogErrorPopUp");
+                        }
+
                     }
                     if (Directory.Exists(ok))
                     {
-                        _selectedFolder = "";
-                        Directory.Delete(ok);
+                        try
+                        {
+                            Directory.Delete(ok);
+                            _selectedFolder = "";
+                        }
+                        catch (Exception e)
+                        {
+                            _errorPopStr = e.Message;
+                            ImGui.OpenPopup("FileDialogErrorPopUp");
+                        }
                     }
                 }
+                
                 ImGui.SameLine();
                 ImGui.SetCursorPosX(ImGui.GetWindowWidth() - 120);
+                
                 if (ImGui.Button("Cancel", new Vector2()))
                 {
                     _fileSelectedIndex = 0;
@@ -221,11 +259,13 @@ public unsafe class FileDialog
                     _selectedFile = "";
                     _folderSelectedIndex = 0;
                     _pathInitialized = false;
+                    _errorPopStr = "";
                     path = "";
                     _currentPath = "";
                     FileDialogOpen = false;
                 }
                 ImGui.SameLine();
+                
                 if (ImGui.Button("Select", new Vector2()))
                 {
                     selectedPath = ok;
@@ -234,6 +274,7 @@ public unsafe class FileDialog
                     _selectedFolder = "";
                     _selectedFile = "";
                     _folderSelectedIndex = 0;
+                    _errorPopStr = "";
                     path = "";
                     _currentPath = "";
                     FileDialogOpen = false;
@@ -241,17 +282,39 @@ public unsafe class FileDialog
                 
                 
                 var center = new Vector2(ImGui.GetWindowPos().X + ImGui.GetWindowSize().X * 0.5f, ImGui.GetWindowPos().Y + ImGui.GetWindowSize().Y * 0.5f);
+                
                 ImGui.SetNextWindowPos(center, ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
-                if (ImGui.BeginPopup("NewFolderPopup", ImGuiWindowFlags.Modal)) {
+                if (ImGui.BeginPopupModal("FileDialogErrorPopUp")) {
+                    ImGuiManaged.TextWrapped(_errorPopStr);
+                    //ImGuiManaged.TextColored(Util.Vec_Color(235, 64, 52), _errorPopStr);
+                    if (ImGui.Button("OK##fdep", new Vector2()))
+                    {
+                        ImGui.CloseCurrentPopup();
+                    }
+                    ImGui.EndPopup();
+                }
+                
+                ImGui.SetNextWindowPos(center, ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
+                if (ImGui.BeginPopupModal("NewFolderPopup")) {
                     ImGui.Text("Enter a name for the new folder");
                     ImGuiManaged.InputText("##newfolder", ref newFolderName, 500);
                     if (ImGui.Button("Create##1", new Vector2())) 
                     {
                         if (newFolderName.Length > 0)
                         {
-                            Directory.CreateDirectory(Path.Combine(_currentPath, newFolderName));
-                            newFolderName = "";
-                            ImGui.CloseCurrentPopup();
+                            try
+                            {
+                                Directory.CreateDirectory(Path.Combine(_currentPath, newFolderName));
+                                newFolderName = "";
+                                ImGui.CloseCurrentPopup();
+                            }
+                            catch (Exception e)
+                            {
+                                _errorPopStr = e.Message;
+                                newFolderName = "";
+                                ImGui.OpenPopup("FileDialogErrorPopUp");
+                                ImGui.CloseCurrentPopup();
+                            }
                         }
                     }
                     ImGui.SameLine();
@@ -261,6 +324,7 @@ public unsafe class FileDialog
                     }
                     ImGui.EndPopup();
                 }
+
                 ImGui.End();
             }
             
