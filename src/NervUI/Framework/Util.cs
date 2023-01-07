@@ -5,7 +5,7 @@ using Mochi.DearImGui;
 
 namespace NervUI;
 
-internal static unsafe class Util
+public static unsafe class Util
 {
     internal const int StackAllocationSizeLimit = 2048;
 

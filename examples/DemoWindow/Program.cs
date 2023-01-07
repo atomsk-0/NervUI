@@ -51,6 +51,18 @@ public class DemoLayer2 : Layer
     }
 }
 
+public class TextEditor : Layer
+{
+    private string text = "";
+    private bool open = true;
+    public override unsafe void OnUIRender()
+    {
+        ImGui.Begin("TextEditor Demo", null, ImGuiWindowFlags.NoScrollbar);
+        ImGuiManaged.TextEditor("##Test", ref text, new OpenTK.Mathematics.Vector2(750, 661));
+        ImGui.End();
+    }
+}
+
 internal static class Program
 {
     private static Application _application;
@@ -83,6 +95,7 @@ internal static class Program
             //Push DemoLayer and DemoLayer2 for the renderer
             _application.PushLayer<DemoLayer>();
             _application.PushLayer<DemoLayer2>();
+            _application.PushLayer<TextEditor>();
 
             //Create Menubar for app
             _application.SetMenuBarCallback(() =>
@@ -108,9 +121,11 @@ internal static class Program
 
                 var dock_id_left = ImGuiInternal.DockBuilderSplitNode(dockspace_id, ImGuiDir.Left, 0.2f, null, &dockspace_id);
                 var dock_id_right = ImGuiInternal.DockBuilderSplitNode(dockspace_id, ImGuiDir.Right, 0.25f, null, &dockspace_id);
+                var dock_id_down = ImGuiInternal.DockBuilderSplitNode(dockspace_id, ImGuiDir.Down, 0.25f, null, &dockspace_id);
                         
                 ImGuiInternal.DockBuilderDockWindow("Dear ImGui Demo", dock_id_right);
                 ImGuiInternal.DockBuilderDockWindow("NervUI Demo", dock_id_left);
+                ImGuiInternal.DockBuilderDockWindow("TextEditor Demo", dock_id_down);
                 ImGuiInternal.DockBuilderFinish(dockspace_id);
             });
 

@@ -793,6 +793,33 @@ public class ImGuiManaged
 
         return result;
     }
+
+
+    //Not perfect but exsits... need some polishing
+    public static unsafe bool TextEditor(string label, ref string text, Vector2 size, ImGuiInputTextFlags flags = ImGuiInputTextFlags.None)
+    {
+        ImGui.PushStyleColor(ImGuiCol.FrameBg, Util.Vec_Color(44, 44, 44));
+        ImGui.BeginChild("txt1", new System.Numerics.Vector2(size.X, size.Y), false, ImGuiWindowFlags.NoScrollbar);
+        ImGui.PushStyleColor(ImGuiCol.Text, Util.Vec_Color(66, 135, 245));
+        ImGui.BeginGroup();
+        ImGui.Spacing();
+        int lines = text.Split('\n').Length;
+        string txt = " 0\n";
+        for (int i = 1; i < lines; i++)
+        {
+            txt += $" {i}\n";
+        }
+        ImGui.TextV(txt, null);
+        ImGui.EndGroup();
+        
+        ImGui.PopStyleColor(1);
+        ImGui.SameLine();
+        bool result = ImGuiManaged.InputTextMultiLine("##textedit1", ref text, 2000000, new OpenTK.Mathematics.Vector2(size.X - 5, size.Y + lines * 15));
+        ImGui.EndChild();
+        ImGui.PopStyleColor();
+        return result;
+    }
+    //TODO  ^^^^
     
     //From https://github.com/ocornut/imgui/issues/1901 and for some reason it's not working
     #if false
