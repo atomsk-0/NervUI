@@ -1,5 +1,6 @@
 using System.Numerics;
 using Mochi.DearImGui;
+using Mochi.DearImGui.Internal;
 using Mochi.DearImGui.OpenTK;
 using NervUI.Modules;
 using OpenTK.Graphics.OpenGL;
@@ -22,6 +23,8 @@ public unsafe class GLFWWindow : NativeWindow
     public List<Layer> Layers = new();
 
     internal Action menuBarCallback;
+
+    internal Action<uint, ImGuiDockNodeFlags> dockSpaceCallback;
 
     public GLFWWindow(NativeWindowSettings nativeWindowSettings, string? glslVersion, ApplicationOptions options,
         Application application)
@@ -82,6 +85,7 @@ public unsafe class GLFWWindow : NativeWindow
         }
     }
 
+    private static bool firstTime = true;
     public void Run()
     {
         var io = ImGui.GetIO();
@@ -94,7 +98,7 @@ public unsafe class GLFWWindow : NativeWindow
         while (!GLFW.WindowShouldClose(WindowPtr))
         {
             ProcessEvents();
-
+            
             RendererBackend.NewFrame();
             PlatformBackend.NewFrame();
             ImGui.NewFrame();
@@ -131,6 +135,18 @@ public unsafe class GLFWWindow : NativeWindow
                 {
                     var dockspace_id = ImGui.GetID("OpenGLAppDockspace");
                     ImGui.DockSpace(dockspace_id, new Vector2(0, 0), dockNodeFlags);
+
+                    if (firstTime)
+                    {
+                        firstTime = false;
+                        
+                        ImGuiInternal.DockBuilderRemoveNode(dockspace_id);
+                        ImGuiInternal.DockBuilderAddNode(dockspace_id, dockNodeFlags);
+                        ImGuiInternal.DockBuilderSetNodeSize(dockspace_id, viewport->Size);
+                        
+                        if (dockSpaceCallback != null)
+                            dockSpaceCallback(dockspace_id, dockNodeFlags);
+                    }
                 }
 
                 if (menuBarCallback != null)

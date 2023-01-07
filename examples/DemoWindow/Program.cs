@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Windows;
 using Mochi.DearImGui;
+using Mochi.DearImGui.Internal;
 using NervUI;
 using NervUI.Modules;
 
@@ -59,7 +60,7 @@ internal static class Program
 
     private static NotifyIcon _notifyIcon;
 
-    private static void Main()
+    private static unsafe void Main()
     {
         NotifyIconExample();
         //Create main loop for the application
@@ -98,6 +99,19 @@ internal static class Program
                     if (ImGuiManaged.MenuItem("Exit", "")) _application.Exit();
                     ImGui.EndMenu();
                 }
+            });
+            
+            //Create dockspace config
+            _application.SetDockspaceCallback((u, flags) =>
+            {
+                uint dockspace_id = u;
+
+                var dock_id_left = ImGuiInternal.DockBuilderSplitNode(dockspace_id, ImGuiDir.Left, 0.2f, null, &dockspace_id);
+                var dock_id_right = ImGuiInternal.DockBuilderSplitNode(dockspace_id, ImGuiDir.Right, 0.25f, null, &dockspace_id);
+                        
+                ImGuiInternal.DockBuilderDockWindow("Dear ImGui Demo", dock_id_right);
+                ImGuiInternal.DockBuilderDockWindow("NervUI Demo", dock_id_left);
+                ImGuiInternal.DockBuilderFinish(dockspace_id);
             });
 
             //Run application
