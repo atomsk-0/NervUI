@@ -6,7 +6,8 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>NervUI</Title>
         <Description>NervUI Is a easy to use and simple app framework with Imgui and OpenGL as backend.
-This project is still in really early stage and supports only x64 currently</Description>
+            This project is still in really early stage and supports only x64 currently
+        </Description>
         <Copyright></Copyright>
         <PackageProjectUrl>https://github.com/byte-0x74/NervUI</PackageProjectUrl>
         <RepositoryUrl>https://github.com/byte-0x74/NervUI</RepositoryUrl>
@@ -27,23 +28,23 @@ This project is still in really early stage and supports only x64 currently</Des
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="ManagedBass" Version="3.1.1" />
-        <PackageReference Include="Mochi.DearImGui" Version="0.0.2" />
-        <PackageReference Include="Mochi.DearImGui.OpenTK" Version="0.0.2" />
-        <PackageReference Include="NotifyIcon.Windows" Version="1.1.0" />
-        <PackageReference Include="OpenTK" Version="4.7.5" />
-        <PackageReference Include="StbImageSharp" Version="2.27.13" />
-        <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+        <PackageReference Include="ManagedBass" Version="3.1.1"/>
+        <PackageReference Include="Mochi.DearImGui" Version="0.0.2"/>
+        <PackageReference Include="Mochi.DearImGui.OpenTK" Version="0.0.2"/>
+        <PackageReference Include="NotifyIcon.Windows" Version="1.1.0"/>
+        <PackageReference Include="OpenTK" Version="4.7.5"/>
+        <PackageReference Include="StbImageSharp" Version="2.27.13"/>
+        <PackageReference Include="System.Drawing.Common" Version="7.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="nerv.png">
-        <Pack>True</Pack>
-        <PackagePath></PackagePath>
-      </None>
-      <None Update="bass.dll">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+        <None Update="nerv.png">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+        <None Update="bass.dll">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

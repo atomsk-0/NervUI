@@ -8,13 +8,18 @@ namespace NervUI;
 
 public class Application : IDisposable
 {
+    public delegate void MenuBarDelegate();
+
+    internal static List<NervFont> Fonts = new();
     public ApplicationOptions Options;
 
     public GLFWWindow Window;
-    
-    internal static List<NervFont> Fonts = new();
 
-    public delegate void MenuBarDelegate();
+    public void Dispose()
+    {
+        Window.Dispose();
+        GC.SuppressFinalize(this);
+    }
 
     public event MenuBarDelegate MenuBar;
 
@@ -25,7 +30,7 @@ public class Application : IDisposable
             Size = new Vector2i(Options.Size.X, Options.Size.Y),
             Title = Options.Title,
             APIVersion = new Version(3, 0),
-            Profile = ContextProfile.Any,
+            Profile = ContextProfile.Any
         };
 
         Window = new GLFWWindow(nativeWindowSettings, "#version 130", Options, this);
@@ -42,11 +47,11 @@ public class Application : IDisposable
 
         return application;
     }
-    
+
     public void PushLayer<T>()
     {
-       Layer layer = (Layer)Activator.CreateInstance(typeof(T));
-       Window.Layers.Add(layer);
+        var layer = (Layer)Activator.CreateInstance(typeof(T));
+        Window.Layers.Add(layer);
     }
 
     public static unsafe void PushFont(string fontName)
@@ -57,6 +62,7 @@ public class Application : IDisposable
             Console.WriteLine($"ERROR: Failed to find font {fontName}. [NervUI]");
             return;
         }
+
         ImGui.PushFont(font.FontData);
     }
 
@@ -64,11 +70,10 @@ public class Application : IDisposable
     {
         Window.menuBarCallback = action;
     }
-    
+
     public static void PopFont()
     {
         ImGui.PopFont();
-        
     }
 
     public void AddFont(NervFont font)
@@ -77,15 +82,18 @@ public class Application : IDisposable
         Window.RefreshFonts();
     }
 
-    public void Run() => Window.Run();
-
-    public void Exit() => Environment.Exit(0);
-    
-    public void Dispose()
+    public void Run()
     {
-        Window.Dispose();
-        GC.SuppressFinalize(this);
+        Window.Run();
     }
 
-    ~Application() => Dispose();
+    public void Exit()
+    {
+        Environment.Exit(0);
+    }
+
+    ~Application()
+    {
+        Dispose();
+    }
 }

@@ -1,6 +1,5 @@
 using System.Drawing;
 using System.Numerics;
-using System.Windows;
 using Mochi.DearImGui;
 
 namespace NervUI.Modules;
@@ -10,16 +9,15 @@ public class MessageBox
     internal static string Title = "";
     internal static string Message = "";
     internal static Color _color = Color.FromArgb(66, 135, 245);
-    internal static bool showMB = false;
+    internal static bool showMB;
 
     public static void ShowMessageBox(string title, string message)
     {
         Title = title;
         Message = message;
         showMB = true;
-
     }
-    
+
     public static void ShowMessageBox(string title, string message, Color title_color)
     {
         Title = title;
@@ -27,12 +25,13 @@ public class MessageBox
         _color = title_color;
         showMB = true;
     }
-    
+
     internal static unsafe void RenderMessageBox()
     {
         if (showMB)
         {
-            var center = new Vector2(ImGui.GetWindowPos().X + ImGui.GetWindowSize().X * 0.5f, ImGui.GetWindowPos().Y + ImGui.GetWindowSize().Y * 0.5f);
+            var center = new Vector2(ImGui.GetWindowPos().X + ImGui.GetWindowSize().X * 0.5f,
+                ImGui.GetWindowPos().Y + ImGui.GetWindowSize().Y * 0.5f);
             ImGui.SetNextWindowPos(center, ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
             if (ImGui.BeginPopupModal("MessageBoxPopup"))
             {
@@ -44,6 +43,7 @@ public class MessageBox
                     ImGui.CloseCurrentPopup();
                     showMB = false;
                 }
+
                 ImGui.EndPopup();
             }
         }

@@ -1,6 +1,3 @@
-using OpenTK.Graphics.OpenGL;
-using StbImageSharp;
-
 namespace NervUI;
 //TODO THIS HAS TO BE FIXED IN IMGUI RENDER THE IMAGE RESULT IS JUST BLANK BLACK no idea why.
 /*
