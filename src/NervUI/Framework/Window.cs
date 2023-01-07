@@ -3,6 +3,7 @@ using Mochi.DearImGui;
 using Mochi.DearImGui.OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Common.Input;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
