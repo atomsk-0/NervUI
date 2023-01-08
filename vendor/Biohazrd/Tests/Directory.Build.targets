@@ -1,6 +1,0 @@
-<Project>
-  <Import Project="../Directory.Build.targets" />
-  <ItemGroup>
-    <None Update="$(MSBuildProjectDirectory)/**/*.h" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-</Project>

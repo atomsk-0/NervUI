@@ -1,4 +1,0 @@
-﻿struct HelloWorld
-{
-    int ItWorks;
-};

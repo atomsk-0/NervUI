@@ -1,47 +1,27 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerv.DearImGui.Generator", "DearImgui\Nerv.DearImGui.Generator\Nerv.DearImGui.Generator.csproj", "{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mochi.DearImGui", "vendor\Mochi.DearImGui\Mochi.DearImGui\Mochi.DearImGui.csproj", "{B24409AF-EABB-4E2B-873C-2A5295E5CE2E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biohazrd", "vendor\Biohazrd\Biohazrd\Biohazrd.csproj", "{48043242-5650-4FCF-A019-7A05B4F6DD3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mochi.DearImGui.Generator", "vendor\Mochi.DearImGui\Mochi.DearImGui.Generator\Mochi.DearImGui.Generator.csproj", "{01CACD47-32B4-4F45-BB66-B625A3B7D2AC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biohazrd.Transformation", "vendor\Biohazrd\Biohazrd.Transformation\Biohazrd.Transformation.csproj", "{D1D97091-7EF8-477C-9302-A84395190A48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mochi.DearImGui.Native", "vendor\Mochi.DearImGui\Mochi.DearImGui.Native\Mochi.DearImGui.Native.csproj", "{A6FC0CA7-2619-4633-B263-23BC940CD18C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biohazrd.Utilities", "vendor\Biohazrd\Biohazrd.Utilities\Biohazrd.Utilities.csproj", "{FA7E55FE-4E8E-4FCE-89EB-16A2EFF5CABF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mochi.DearImGui.Ref", "vendor\Mochi.DearImGui\Mochi.DearImGui.Ref\Mochi.DearImGui.Ref.csproj", "{580600E4-94DF-4F1D-8D2B-BF98B870C443}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biohazrd.OutputGeneration", "vendor\Biohazrd\Biohazrd.OutputGeneration\Biohazrd.OutputGeneration.csproj", "{54506362-10BC-42A5-B11A-85C0D040B046}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MochiDearImGui", "MochiDearImGui", "{91E56E6C-3AEB-4847-9ED8-311F6887BF64}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biohazrd.CSharp", "vendor\Biohazrd\Biohazrd.CSharp\Biohazrd.CSharp.csproj", "{8E9C94A0-38D8-46F3-8726-A5205463B485}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{67BCBD34-2686-431D-8B7D-E9FA3B64C692}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Biohazrd", "Biohazrd", "{18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerv.DearImGui", "DearImgui\Nerv.DearImGui\Nerv.DearImGui.csproj", "{7DBD1218-8702-4615-B806-1B1156C9A280}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mochi.DearImGui.Native", "DearImgui\Mochi.DearImGui.Native\Mochi.DearImGui.Native.csproj", "{83BB7976-4D00-4181-8A14-4B84DB795E42}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{9AEEDBE8-6CDF-4FF5-B42E-DCEF871AA4F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{48043242-5650-4FCF-A019-7A05B4F6DD3E} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
-		{8E9C94A0-38D8-46F3-8726-A5205463B485} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
-		{54506362-10BC-42A5-B11A-85C0D040B046} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
-		{D1D97091-7EF8-477C-9302-A84395190A48} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
-		{FA7E55FE-4E8E-4FCE-89EB-16A2EFF5CABF} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DBD1218-8702-4615-B806-1B1156C9A280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DBD1218-8702-4615-B806-1B1156C9A280}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DBD1218-8702-4615-B806-1B1156C9A280}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DBD1218-8702-4615-B806-1B1156C9A280}.Release|Any CPU.Build.0 = Release|Any CPU
-		{83BB7976-4D00-4181-8A14-4B84DB795E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83BB7976-4D00-4181-8A14-4B84DB795E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83BB7976-4D00-4181-8A14-4B84DB795E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83BB7976-4D00-4181-8A14-4B84DB795E42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B24409AF-EABB-4E2B-873C-2A5295E5CE2E} = {91E56E6C-3AEB-4847-9ED8-311F6887BF64}
+		{01CACD47-32B4-4F45-BB66-B625A3B7D2AC} = {91E56E6C-3AEB-4847-9ED8-311F6887BF64}
+		{A6FC0CA7-2619-4633-B263-23BC940CD18C} = {91E56E6C-3AEB-4847-9ED8-311F6887BF64}
+		{580600E4-94DF-4F1D-8D2B-BF98B870C443} = {91E56E6C-3AEB-4847-9ED8-311F6887BF64}
 	EndGlobalSection
 EndGlobal
