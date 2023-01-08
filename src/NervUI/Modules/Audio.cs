@@ -8,10 +8,12 @@ public class Audio
 
     private readonly int _chan;
 
+    public string Path;
+
     public Audio(string filePath)
     {
         Bass.StreamFree(_chan);
-
+        Path = filePath;
         if ((_chan = Bass.CreateStream(filePath, 0, 0, BassFlags.Loop)) == 0)
             MessageBox.ShowMessageBox("Audio Error", "This file can't be played");
     }
@@ -66,6 +68,8 @@ public class Audio
     {
         Bass.ChannelSetPosition(_chan, (long)(GetAudioPosition() - amount));
     }
+
+    public int GetChannel() => _chan;
 
     public float GetAudioPosition()
     {

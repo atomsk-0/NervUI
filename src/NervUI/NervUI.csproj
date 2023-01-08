@@ -12,9 +12,9 @@
         <PackageProjectUrl>https://github.com/byte-0x74/NervUI</PackageProjectUrl>
         <RepositoryUrl>https://github.com/byte-0x74/NervUI</RepositoryUrl>
         <PackageTags>ImGui, UI, UIX, GUI, Framework</PackageTags>
-        <PackageReleaseNotes>Finished Text Editor and added NervUi Debug window</PackageReleaseNotes>
+        <PackageReleaseNotes>Fixed bugs and added new example TextEditor</PackageReleaseNotes>
         <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-        <Version>1.1.1</Version>
+        <Version>1.1.2</Version>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

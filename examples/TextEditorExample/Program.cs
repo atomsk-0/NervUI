@@ -3,7 +3,6 @@ using Mochi.DearImGui;
 using Mochi.DearImGui.Internal;
 using NervUI;
 using NervUI.Modules;
-using OpenTK.Windowing.Common;
 using TextEditorExample.Layers;
 
 namespace TextEditorExample;
