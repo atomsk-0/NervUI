@@ -10,14 +10,12 @@ public class ImGuiManaged
 {
 #if false
     //Disabled
-    public unsafe static void Image(NervImage image)
+    public unsafe static void Image(NervTexture texture)
     {
-        if (image == null)
+        if (texture == null) 
             return;
-        GL.BindTexture(TextureTarget.Texture2D, image.texture);
         
-        ImGui.Image((void*)image.texture, new System.Numerics.Vector2(image.Width, image.Height),
-            new System.Numerics.Vector2(), new System.Numerics.Vector2(1, 1), new Vector4(1, 1, 1, 1), new Vector4());
+        ImGui.Image((void*)texture.GetHandle(), new System.Numerics.Vector2(texture.GetSize().X, texture.GetSize().Y), new System.Numerics.Vector2(), new System.Numerics.Vector2(1, 1), new Vector4(1,1,1,1), new Vector4());
     }
 #endif
 
