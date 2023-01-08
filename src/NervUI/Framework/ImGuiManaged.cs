@@ -820,7 +820,7 @@ public class ImGuiManaged
     //TODO Make This code Cleaner in next code clean up
     private static string aw = "";
 
-    public static unsafe void TextEditor(string label, ref string text, Vector2 size,
+    public static unsafe bool TextEditor(string label, ref string text, Vector2 size,
         ImGuiInputTextFlags flags = ImGuiInputTextFlags.None)
     {
         ImGui.PushStyleColor(ImGuiCol.FrameBg, Util.Vec_Color(44, 44, 44));
@@ -854,6 +854,40 @@ public class ImGuiManaged
         ImGui.EndChild();
         ImGui.EndChild();
         ImGui.PopStyleColor();
+
+        return result;
+    }
+    
+    public static unsafe bool Begin(string name, ref bool p_open, ImGuiWindowFlags flags)
+    {
+        byte* native_name;
+        int name_byteCount = 0;
+        if (name != null)
+        {
+            name_byteCount = Encoding.UTF8.GetByteCount(name);
+            if (name_byteCount > Util.StackAllocationSizeLimit)
+            {
+                native_name = Util.Allocate(name_byteCount + 1);
+            }
+            else
+            {
+                byte* native_name_stackBytes = stackalloc byte[name_byteCount + 1];
+                native_name = native_name_stackBytes;
+            }
+            int native_name_offset = Util.GetUtf8(name, native_name, name_byteCount);
+            native_name[native_name_offset] = 0;
+        }
+        else { native_name = null; }
+        byte native_p_open_val = p_open ? (byte)1 : (byte)0;
+        var ok = p_open;
+        var test = &ok;
+        var ret = ImGui.Begin(native_name, test, flags);
+        if (name_byteCount > Util.StackAllocationSizeLimit)
+        {
+            Util.Free(native_name);
+        }
+        p_open = native_p_open_val != 0;
+        return ret;
     }
 
     //From https://github.com/ocornut/imgui/issues/1901 and for some reason it's not working

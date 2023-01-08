@@ -35,10 +35,16 @@ public unsafe class GLFWWindow : NativeWindow
         GlslVersion = glslVersion;
         Context.MakeCurrent();
         VSync = VSyncMode.On;
+        WindowBorder = options.WindowBorder;
+        WindowState = options.WindowState;
 
         ImGui.CHECKVERSION();
         ImGui.CreateContext();
         var io = ImGui.GetIO();
+        
+        MouseDown += OnMouseDown;
+        KeyDown += OnKeyDown;
+        KeyUp += OnKeyUp;
 
         // Util.SetStyle();
 
@@ -88,6 +94,24 @@ public unsafe class GLFWWindow : NativeWindow
             layer.OnWindowLoad();
     }
 
+    private void OnKeyUp(KeyboardKeyEventArgs obj)
+    {
+        foreach (var layer in Layers)
+            layer.OnKeyUp(obj);
+    }
+
+    private void OnKeyDown(KeyboardKeyEventArgs obj)
+    {
+        foreach (var layer in Layers)
+            layer.OnKeyDown(obj);
+    }
+
+    private void OnMouseDown(MouseButtonEventArgs obj)
+    {
+        foreach (var layer in Layers)
+            layer.OnMouseDown(obj);
+    }
+
     public void RefreshFonts()
     {
         var io = ImGui.GetIO();
@@ -102,7 +126,7 @@ public unsafe class GLFWWindow : NativeWindow
     public void Run()
     {
         var io = ImGui.GetIO();
-        ;
+        
         Vector3 clearColor = new(0.45f, 0.55f, 0.6f);
 
         var f = 0f;
