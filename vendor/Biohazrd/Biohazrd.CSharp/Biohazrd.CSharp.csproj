@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageDescription>This package provides transformations and binding generation for C#.</PackageDescription>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Biohazrd\Biohazrd.csproj" />
+    <ProjectReference Include="..\Biohazrd.Transformation\Biohazrd.Transformation.csproj" />
+    <ProjectReference Include="..\Biohazrd.OutputGeneration\Biohazrd.OutputGeneration.csproj" />
+  </ItemGroup>
+
+</Project>

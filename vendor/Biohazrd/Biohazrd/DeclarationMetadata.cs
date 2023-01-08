@@ -1,0 +1,95 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
+namespace Biohazrd
+{
+    // We restrict the metadata types to structs so we don't need to worry about supporting inheritance.
+    // (Otherwise we might be expected to handle returning a derived type when a the request was for a base type.)
+    public readonly struct DeclarationMetadata
+    {
+        private readonly ImmutableDictionary<Type, object>? Metadata;
+
+        private DeclarationMetadata(ImmutableDictionary<Type, object>? metadata)
+            => Metadata = metadata;
+
+        public bool TryGet<T>(out T value)
+            where T : struct, IDeclarationMetadataItem
+        {
+            if (Metadata is not null && Metadata.TryGetValue(typeof(T), out object? boxedValue))
+            {
+                Debug.Assert(boxedValue is T, $"The value corresponding to {typeof(T).FullName} must be of that type.");
+                value = Unsafe.Unbox<T>(boxedValue);
+                return true;
+            }
+            else
+            {
+                value = default;
+                return false;
+            }
+        }
+
+        public T Get<T>()
+            where T : struct, IDeclarationMetadataItem
+        {
+            if (!TryGet(out T result))
+            { throw new KeyNotFoundException($"No metadata for '{typeof(T).FullName}' exists in the collection."); }
+
+            return result;
+        }
+
+        public bool Has<T>()
+            where T : struct, IDeclarationMetadataItem
+            => Metadata is not null && Metadata.ContainsKey(typeof(T));
+
+        public DeclarationMetadata Set<T>(T value)
+            where T : struct, IDeclarationMetadataItem
+        {
+            ImmutableDictionary<Type, object> metadata = Metadata ?? ImmutableDictionary<Type, object>.Empty;
+            return new DeclarationMetadata(metadata.SetItem(typeof(T), value));
+        }
+
+        public DeclarationMetadata Set<T>()
+            where T : struct, IDeclarationMetadataItem
+            => Set<T>(default);
+
+        public DeclarationMetadata Add<T>(T value)
+            where T : struct, IDeclarationMetadataItem
+        {
+            ImmutableDictionary<Type, object> metadata = Metadata ?? ImmutableDictionary<Type, object>.Empty;
+            return new DeclarationMetadata(metadata.Add(typeof(T), value));
+        }
+
+        public DeclarationMetadata Add<T>()
+            where T : struct, IDeclarationMetadataItem
+            => Add<T>(default);
+
+        public DeclarationMetadata Remove<T>()
+            where T : struct, IDeclarationMetadataItem
+        {
+            if (Metadata is null)
+            { return this; }
+
+            return new DeclarationMetadata(Metadata.Remove(typeof(T)));
+        }
+
+        /// <remarks>The API of this type is not stable as it is affected by the internal implementation of <see cref="DeclarationMetadata"/>.</remarks>
+        public readonly ref struct DebugView
+        {
+            private readonly ImmutableDictionary<Type, object>? Metadata;
+
+            private DebugView(DeclarationMetadata metadata)
+                => Metadata = metadata.Metadata;
+
+            public int MetadataCount => Metadata?.Count ?? 0;
+
+            public ImmutableDictionary<Type, object>.Enumerator GetEnumerator()
+                => Metadata?.GetEnumerator() ?? ImmutableDictionary<Type, object>.Empty.GetEnumerator();
+
+            public static explicit operator DebugView(in DeclarationMetadata metadata)
+                => new(metadata);
+        }
+    }
+}

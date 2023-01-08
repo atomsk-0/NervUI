@@ -1,8 +1,39 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DearImgui", "DearImgui", "{BECF961E-2D43-4E5A-89AB-AE1953846395}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerv.DearImGui.Generator", "DearImgui\Nerv.DearImGui.Generator\Nerv.DearImGui.Generator.csproj", "{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biohazrd", "vendor\Biohazrd\Biohazrd\Biohazrd.csproj", "{48043242-5650-4FCF-A019-7A05B4F6DD3E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biohazrd.Transformation", "vendor\Biohazrd\Biohazrd.Transformation\Biohazrd.Transformation.csproj", "{D1D97091-7EF8-477C-9302-A84395190A48}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biohazrd.Utilities", "vendor\Biohazrd\Biohazrd.Utilities\Biohazrd.Utilities.csproj", "{FA7E55FE-4E8E-4FCE-89EB-16A2EFF5CABF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biohazrd.OutputGeneration", "vendor\Biohazrd\Biohazrd.OutputGeneration\Biohazrd.OutputGeneration.csproj", "{54506362-10BC-42A5-B11A-85C0D040B046}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biohazrd.CSharp", "vendor\Biohazrd\Biohazrd.CSharp\Biohazrd.CSharp.csproj", "{8E9C94A0-38D8-46F3-8726-A5205463B485}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Biohazrd", "Biohazrd", "{18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA} = {BECF961E-2D43-4E5A-89AB-AE1953846395}
+		{18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D} = {BECF961E-2D43-4E5A-89AB-AE1953846395}
+		{48043242-5650-4FCF-A019-7A05B4F6DD3E} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
+		{8E9C94A0-38D8-46F3-8726-A5205463B485} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
+		{54506362-10BC-42A5-B11A-85C0D040B046} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
+		{D1D97091-7EF8-477C-9302-A84395190A48} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
+		{FA7E55FE-4E8E-4FCE-89EB-16A2EFF5CABF} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
