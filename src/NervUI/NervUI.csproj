@@ -12,9 +12,9 @@
         <PackageProjectUrl>https://github.com/byte-0x74/NervUI</PackageProjectUrl>
         <RepositoryUrl>https://github.com/byte-0x74/NervUI</RepositoryUrl>
         <PackageTags>ImGui, UI, UIX, GUI, Framework</PackageTags>
-        <PackageReleaseNotes>Fixed bugs, Added MessageBox, Added TrayIcon support added error output to FileDialog</PackageReleaseNotes>
+        <PackageReleaseNotes>Added new style, Audio System and Text editor (text editor will be completed fully in next patch)</PackageReleaseNotes>
         <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-        <Version>1.0.5</Version>
+        <Version>1.1.0</Version>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

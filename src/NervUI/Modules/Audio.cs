@@ -26,6 +26,8 @@ public class Audio
         if (_initialized) return;
 
         Bass.Init();
+        NervUIDebug.Log("BASS initialized");
+        NervUIDebug.Log($"BASS version:           {Bass.Version}");
 
         _initialized = true;
     }

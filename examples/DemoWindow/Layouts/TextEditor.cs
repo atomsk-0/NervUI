@@ -1,5 +1,6 @@
 using Mochi.DearImGui;
 using NervUI;
+using OpenTK.Mathematics;
 
 namespace DemoWindow.Layouts;
 
@@ -12,7 +13,7 @@ public class TextEditor : Layer
     public override unsafe void OnUIRender()
     {
         ImGui.Begin("TextEditor Demo", null, ImGuiWindowFlags.NoScrollbar);
-        ImGuiManaged.TextEditor("##Test", ref text, new OpenTK.Mathematics.Vector2(750, 661));
+        ImGuiManaged.TextEditor("##Test", ref text, new Vector2(750, 661));
         ImGui.End();
     }
 }

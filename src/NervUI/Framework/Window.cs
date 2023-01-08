@@ -74,6 +74,15 @@ public unsafe class GLFWWindow : NativeWindow
         PlatformBackend = new PlatformBackend(this, true);
         RendererBackend = new RendererBackend(GlslVersion);
 
+        NervUIDebug.Log("--------------------Render Information--------------------");
+        NervUIDebug.Log($"Render API:           {API}");
+        NervUIDebug.Log($"Render API Version:   {APIVersion.Major}.{APIVersion.Minor}");
+        NervUIDebug.Log($"Video Render Device:  {GL.GetString(StringName.Renderer)}");
+        NervUIDebug.Log($"Video Vendor:         {GL.GetString(StringName.Vendor)}");
+        NervUIDebug.Log($"Video Driver:         {GL.GetString(StringName.Version)}");
+        NervUIDebug.Log($"ImGui Version:         {ImGui.IMGUI_VERSION}");
+        NervUIDebug.Log("----------------------------------------------------------");
+
 
         foreach (var layer in Layers)
             layer.OnWindowLoad();

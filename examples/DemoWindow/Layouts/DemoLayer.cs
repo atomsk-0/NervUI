@@ -1,5 +1,6 @@
 using Mochi.DearImGui;
 using NervUI;
+using NervUI.Modules;
 
 namespace DemoWindow.Layouts;
 
@@ -10,5 +11,6 @@ public class DemoLayer : Layer
     {
         var open = true;
         ImGui.ShowDemoWindow(&open);
+        NervUIDebug.Show();
     }
 }
