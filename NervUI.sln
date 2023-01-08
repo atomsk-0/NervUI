@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DearImgui", "DearImgui", "{BECF961E-2D43-4E5A-89AB-AE1953846395}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerv.DearImGui.Generator", "DearImgui\Nerv.DearImGui.Generator\Nerv.DearImGui.Generator.csproj", "{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biohazrd", "vendor\Biohazrd\Biohazrd\Biohazrd.csproj", "{48043242-5650-4FCF-A019-7A05B4F6DD3E}"
@@ -16,14 +14,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biohazrd.CSharp", "vendor\B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Biohazrd", "Biohazrd", "{18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerv.DearImGui", "DearImgui\Nerv.DearImGui\Nerv.DearImGui.csproj", "{7DBD1218-8702-4615-B806-1B1156C9A280}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mochi.DearImGui.Native", "DearImgui\Mochi.DearImGui.Native\Mochi.DearImGui.Native.csproj", "{83BB7976-4D00-4181-8A14-4B84DB795E42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA} = {BECF961E-2D43-4E5A-89AB-AE1953846395}
-		{18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D} = {BECF961E-2D43-4E5A-89AB-AE1953846395}
 		{48043242-5650-4FCF-A019-7A05B4F6DD3E} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
 		{8E9C94A0-38D8-46F3-8726-A5205463B485} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
 		{54506362-10BC-42A5-B11A-85C0D040B046} = {18A3634E-1F6C-46DC-9B44-4B3FFD9E0D7D}
@@ -35,5 +35,13 @@ Global
 		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0E34AF8-ABFE-4708-B19E-9064F856EBCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DBD1218-8702-4615-B806-1B1156C9A280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DBD1218-8702-4615-B806-1B1156C9A280}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DBD1218-8702-4615-B806-1B1156C9A280}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DBD1218-8702-4615-B806-1B1156C9A280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83BB7976-4D00-4181-8A14-4B84DB795E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83BB7976-4D00-4181-8A14-4B84DB795E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83BB7976-4D00-4181-8A14-4B84DB795E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83BB7976-4D00-4181-8A14-4B84DB795E42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
