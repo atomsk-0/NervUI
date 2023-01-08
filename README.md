@@ -5,6 +5,8 @@ NervUI Is a easy to use and simple app framework with Imgui and OpenGL as backen
 This project is still in really early stage and supports only x64 currently
 
 ![Sample](https://cdn.discordapp.com/attachments/1060656842323263500/1061369277321576578/image.png)
+## Video of NervUI TextEditor Example in action
+[![NervUI TextEditor Example](https://markdown-videos.deta/youtube/wUJ3vr8q6A0)](https://youtu.be/wUJ3vr8q6A0)
 
 ## Requirements
 - .NET 6.0 or 7.0 SDK
