@@ -1,7 +1,9 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using Mochi.DearImGui;
+using Mochi.DearImGui.Internal;
 using Vector2 = OpenTK.Mathematics.Vector2;
 
 namespace NervUI;
@@ -817,29 +819,42 @@ public class ImGuiManaged
     }
 
 
-    //Not perfect but exsits... need some polishing
-    public static unsafe bool TextEditor(string label, ref string text, Vector2 size,
+    //TODO Make This code Cleaner in next code clean up
+    private static string aw = "";
+    public static unsafe void TextEditor(string label, ref string text, Vector2 size,
         ImGuiInputTextFlags flags = ImGuiInputTextFlags.None)
     {
         ImGui.PushStyleColor(ImGuiCol.FrameBg, Util.Vec_Color(44, 44, 44));
-        ImGui.BeginChild("txt1", new System.Numerics.Vector2(size.X, size.Y), false, ImGuiWindowFlags.NoScrollbar);
+        ImGui.BeginChild("txt1", new System.Numerics.Vector2(size.X, size.Y), false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
+        float addx = 5.9f * aw.ToCharArray().Length;
+        ImGui.BeginChild("txt2", new System.Numerics.Vector2(9f + addx, size.Y), false, ImGuiWindowFlags.NoScrollbar);
         ImGui.PushStyleColor(ImGuiCol.Text, Util.Vec_Color(66, 135, 245));
+        ImGui.SetScrollY(9999999);
         ImGui.BeginGroup();
         ImGui.Spacing();
+        List<int> a = new List<int>();
         var lines = text.Split('\n').Length;
-        var txt = " 0\n";
-        for (var i = 1; i < lines; i++) txt += $" {i}\n";
+        a.Add(0);
+        var txt = "0\n";
+        for (var i = 1; i < lines; i++)
+        {
+            a.Add(i);
+            txt += $"{i}\n";
+        }
+
+        aw = a.Max().ToString();
+        ImGui.SameLine(2.5f);
         ImGui.TextV(txt, null);
         ImGui.EndGroup();
-
         ImGui.PopStyleColor();
+        ImGui.EndChild();
         ImGui.SameLine();
-        var result = InputTextMultiLine("##textedit1", ref text, 2000000, new Vector2(size.X - 5, size.Y + lines * 15));
+        ImGui.BeginChild("txt3", new System.Numerics.Vector2(size.X - 5, size.Y), false, ImGuiWindowFlags.NoScrollbar);
+        var result = InputTextMultiLine("##textedit1", ref text, 2000000, new Vector2(size.X - 5, size.Y));
+        ImGui.EndChild();
         ImGui.EndChild();
         ImGui.PopStyleColor();
-        return result;
     }
-    //TODO  ^^^^
 
     //From https://github.com/ocornut/imgui/issues/1901 and for some reason it's not working
 #if false
