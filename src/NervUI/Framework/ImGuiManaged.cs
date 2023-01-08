@@ -1,9 +1,7 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
 using Mochi.DearImGui;
-using Mochi.DearImGui.Internal;
 using Vector2 = OpenTK.Mathematics.Vector2;
 
 namespace NervUI;
@@ -821,18 +819,20 @@ public class ImGuiManaged
 
     //TODO Make This code Cleaner in next code clean up
     private static string aw = "";
+
     public static unsafe void TextEditor(string label, ref string text, Vector2 size,
         ImGuiInputTextFlags flags = ImGuiInputTextFlags.None)
     {
         ImGui.PushStyleColor(ImGuiCol.FrameBg, Util.Vec_Color(44, 44, 44));
-        ImGui.BeginChild("txt1", new System.Numerics.Vector2(size.X, size.Y), false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
-        float addx = 5.9f * aw.ToCharArray().Length;
+        ImGui.BeginChild("txt1", new System.Numerics.Vector2(size.X, size.Y), false,
+            ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
+        var addx = 5.9f * aw.ToCharArray().Length;
         ImGui.BeginChild("txt2", new System.Numerics.Vector2(9f + addx, size.Y), false, ImGuiWindowFlags.NoScrollbar);
         ImGui.PushStyleColor(ImGuiCol.Text, Util.Vec_Color(66, 135, 245));
         ImGui.SetScrollY(9999999);
         ImGui.BeginGroup();
         ImGui.Spacing();
-        List<int> a = new List<int>();
+        var a = new List<int>();
         var lines = text.Split('\n').Length;
         a.Add(0);
         var txt = "0\n";
@@ -850,7 +850,7 @@ public class ImGuiManaged
         ImGui.EndChild();
         ImGui.SameLine();
         ImGui.BeginChild("txt3", new System.Numerics.Vector2(size.X - 5, size.Y), false, ImGuiWindowFlags.NoScrollbar);
-        var result = InputTextMultiLine("##textedit1", ref text, 2000000, new Vector2(size.X - 5, size.Y));
+        var result = InputTextMultiLine("##textedit1", ref text, 2000000, new Vector2(size.X - 5, size.Y), flags);
         ImGui.EndChild();
         ImGui.EndChild();
         ImGui.PopStyleColor();
