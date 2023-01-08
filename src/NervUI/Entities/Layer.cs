@@ -19,4 +19,18 @@ public class Layer
     public virtual void OnFocusedChanged(FocusedChangedEventArgs e)
     {
     }
+
+    public virtual void OnMouseDown(MouseButtonEventArgs e)
+    {
+        
+    }
+    public virtual void OnKeyUp(KeyboardKeyEventArgs obj)
+    {
+        
+    }
+
+    public virtual void OnKeyDown(KeyboardKeyEventArgs obj)
+    {
+        
+    }
 }

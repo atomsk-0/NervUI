@@ -53,6 +53,11 @@ public class Application : IDisposable
         var layer = (Layer)Activator.CreateInstance(typeof(T));
         Window.Layers.Add(layer);
     }
+    
+    public void PushLayer(Layer layer)
+    {
+        Window.Layers.Add(layer);
+    }
 
     public static unsafe void PushFont(string fontName)
     {
