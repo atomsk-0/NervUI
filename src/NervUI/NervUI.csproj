@@ -5,14 +5,15 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>2.0.0</Version>
+        <Title>NervUI</Title>
+        <Authors>byte-0x74</Authors>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Silk.NET" Version="2.16.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Common" />
+      <ProjectReference Include="..\..\vendor\Mochi.DearImGui\Mochi.DearImGui.Native\Mochi.DearImGui.Native.csproj" />
+      <ProjectReference Include="..\..\vendor\Mochi.DearImGui\Mochi.DearImGui\Mochi.DearImGui.csproj" />
     </ItemGroup>
 
 </Project>
