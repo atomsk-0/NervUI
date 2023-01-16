@@ -28,7 +28,7 @@ internal static unsafe class Program
         
             _application = Application.CreateApplication(options);
 
-            _application.PushLayer<MainLayer>();
+            _application.PushLayer(new MainLayer());
             
             _application.CreateWindow();
 

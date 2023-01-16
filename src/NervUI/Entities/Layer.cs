@@ -1,4 +1,5 @@
 using OpenTK.Windowing.Common;
+using Riok.Mapperly.Abstractions;
 
 namespace NervUI.Entities;
 

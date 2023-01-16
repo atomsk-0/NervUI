@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using NervUI.Common;
 using NervUI.Entities;
 using NervUI.Framework;
@@ -26,8 +27,13 @@ public class Application
         return app;
     }
 
-    public void PushLayer<T>()
-        => Layers.Add(((Layer)Activator.CreateInstance(typeof(T))));
+    //AOT Does not support reflection so this method is disabled for now maybe will use mapper to do the trick
+    /*public void PushLayer<T>()
+    {
+        //=> Layers.Add(((Layer)Activator.CreateInstance(typeof(T))));
+        //var mapper = typeof(T);
+        //Layers.Add((Layer)FormatterServices.GetSafeUninitializedObject(typeof(T)));
+    }*/
 
     public void PushLayer(Layer layer)
         => Layers.Add(layer);

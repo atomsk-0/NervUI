@@ -5,9 +5,17 @@ namespace TestWindow;
 
 public unsafe class MainLayer : Layer
 {
-    private bool m_DemoOpen = true;
+    private bool m_DemoOpen;
 
-    private int _clickTimes = 0;
+    private int _clickTimes;
+
+    //Initialize variables
+    public MainLayer()
+    {
+        _clickTimes = 55;
+        m_DemoOpen = true;
+        Console.WriteLine("OO");
+    }
     
     public override void OnUIRender()
     {
@@ -18,7 +26,7 @@ public unsafe class MainLayer : Layer
 
         ImGui.Begin("NervUI Test");
         {
-            ImGui.Text($"Application average {1000f / io->Framerate} ms/frame ({io->Framerate} FPS)");
+            ImGui.TextWrapped($"Application average {1000f / io->Framerate} ms/frame ({io->Framerate} FPS)");
             ImGui.Separator();
             if (ImGui.Button($"This button is clicked {_clickTimes} times.", default))
                 _clickTimes++;
