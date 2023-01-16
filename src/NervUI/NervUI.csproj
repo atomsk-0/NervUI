@@ -5,15 +5,21 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>2.0.0</Version>
-        <Title>NervUI</Title>
-        <Authors>byte-0x74</Authors>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <PlatformTarget>x64</PlatformTarget>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <PlatformTarget>x64</PlatformTarget>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\vendor\Mochi.DearImGui\Mochi.DearImGui.Native\Mochi.DearImGui.Native.csproj" />
-      <ProjectReference Include="..\..\vendor\Mochi.DearImGui\Mochi.DearImGui\Mochi.DearImGui.csproj" />
+      <PackageReference Include="Mochi.DearImGui" Version="0.0.2" />
+      <PackageReference Include="Mochi.DearImGui.linux-x64" Version="0.0.2" />
+      <PackageReference Include="Mochi.DearImGui.OpenTK" Version="0.0.2" />
+      <PackageReference Include="OpenTK" Version="4.7.5" />
     </ItemGroup>
 
 </Project>
