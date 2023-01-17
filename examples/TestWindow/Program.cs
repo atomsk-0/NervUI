@@ -27,6 +27,9 @@ internal static unsafe class Program
             };
         
             _application = Application.CreateApplication(options);
+            
+            
+            _application.SetDefaultFont(new NervFont("Roboto-Regular", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Fonts", "Roboto-Regular.ttf"), 16f));
 
             _application.PushLayer(new MainLayer());
             

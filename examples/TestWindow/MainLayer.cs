@@ -5,18 +5,10 @@ namespace TestWindow;
 
 public unsafe class MainLayer : Layer
 {
-    private bool m_DemoOpen;
+    private bool m_DemoOpen = false;
 
-    private int _clickTimes;
+    private int _clickTimes = 0;
 
-    //Initialize variables
-    public MainLayer()
-    {
-        _clickTimes = 55;
-        m_DemoOpen = true;
-        Console.WriteLine("OO");
-    }
-    
     public override void OnUIRender()
     {
         var io = ImGui.GetIO();

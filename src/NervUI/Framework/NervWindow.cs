@@ -23,6 +23,7 @@ public unsafe class NervWindow : NativeWindow
 
     internal Action<uint> DockSpaceCallback;
     internal Action MenuBarCallback;
+    internal Action StyleCallback;
     internal Application Instance;
 
     public NervWindow(NativeWindowSettings nativeWindowSettings, ApplicationOptions options, Application instance) : base(nativeWindowSettings)
@@ -45,11 +46,29 @@ public unsafe class NervWindow : NativeWindow
         
         io->ConfigFlags |= ImGuiConfigFlags.NavEnableKeyboard;
         io->ConfigFlags |= ImGuiConfigFlags.ViewportsEnable;
+
+        if (Instance.DefaultFont != null)
+        {
+            Instance.DefaultFont.FontData =
+                io->Fonts->AddFontFromFileTTF(Instance.DefaultFont.Path, Instance.DefaultFont.Size);
+            io->FontDefault = Instance.DefaultFont.FontData;
+            Instance.DefaultFont.Loaded = true;
+        }
         
-        //TODO Custom fonts load
+        
+        foreach (var font in Instance.Fonts.Where(c => c.Loaded == false))
+        {
+            Core.Log($"Loaded font {font.Name} from {font.Path}", LogType.DEBUG);
+            font.FontData = io->Fonts->AddFontFromFileTTF(font.Path, font.Size);
+            font.Loaded = true;
+        }
         
         var style = ImGui.GetStyle();
-        Util.SetStyle();
+
+        if (StyleCallback == null)
+            Util.SetStyle();
+        else
+            StyleCallback();
 
         if (io->ConfigFlags.HasFlag(ImGuiConfigFlags.ViewportsEnable))
         {
@@ -75,7 +94,7 @@ public unsafe class NervWindow : NativeWindow
         foreach (var layer in Instance.Layers)
             layer.OnWindowLoad();
     }
-
+    
     internal void Run()
     {
         var io = ImGui.GetIO();
