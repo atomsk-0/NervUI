@@ -43,7 +43,8 @@ internal static unsafe class Program
                         FileDialog.ShowFileDialog(Core.Platform == OSPlatform.Linux ? Linux.DefaultFilePath : Windows.DefaultFilePath, FileDialogType.OpenFile, delegate(string s)
                         {
                             Console.WriteLine(s);
-                            //Prints the selected path/file location
+                            if (File.Exists(s))
+                                MainLayer.text1 = File.ReadAllText(s);
                         });
                     if (ImGuiManaged.MenuItem("MessageBox", "")) MessageBox.ShowMessageBox("Hello World", "Test");
                     if (ImGuiManaged.MenuItem("Exit", "")) Environment.Exit(0);

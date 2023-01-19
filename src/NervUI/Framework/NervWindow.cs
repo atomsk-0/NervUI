@@ -188,9 +188,14 @@ public unsafe class NervWindow : NativeWindow
             }
         }
     }
-
+    
     ~NervWindow()
     {
-        //TODO Free memory.
+        _platformBackend.Dispose();
+        _rendererBackend.Dispose();
+        DockSpaceCallback = null;
+        MenuBarCallback = null;
+        StyleCallback = null;
+        Instance = null;
     }
 }

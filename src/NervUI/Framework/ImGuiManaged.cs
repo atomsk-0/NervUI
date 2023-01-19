@@ -2,6 +2,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Mochi.DearImGui;
+using Mochi.DearImGui.Internal;
 
 namespace NervUI.Framework;
 
@@ -801,49 +802,61 @@ public class ImGuiManaged
 
         return result;
     }
-
-
-    //TODO Make this code cleaner and more optimized
-    private static string aw = "";
-
+    
     public static unsafe bool TextEditor(string label, ref string text, Vector2 size,
         ImGuiInputTextFlags flags = ImGuiInputTextFlags.None)
     {
+        bool result;
+        
         ImGui.PushStyleColor(ImGuiCol.FrameBg, Util.Vec_Color(44, 44, 44));
-        ImGui.BeginChild("txt1", new System.Numerics.Vector2(size.X, size.Y), false,
-            ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
-        var addx = 5.9f * aw.ToCharArray().Length;
-        ImGui.BeginChild("txt2", new System.Numerics.Vector2(9f + addx, size.Y), false, ImGuiWindowFlags.NoScrollbar);
-        ImGui.PushStyleColor(ImGuiCol.Text, Util.Vec_Color(66, 135, 245));
-        ImGui.SetScrollY(9999999);
-        ImGui.BeginGroup();
-        ImGui.Spacing();
-        var a = new List<int>();
-        var lines = text.Split('\n').Length;
-        a.Add(0);
-        var txt = "0\n";
-        for (var i = 1; i < lines; i++)
+        
+        ImGui.BeginChild($"{label}tec1", new Vector2(size.X, size.Y), false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
         {
-            a.Add(i);
-            txt += $"{i}\n";
+            float numChildWidth = 6.7f * text.Split('\n').Length.ToString().ToCharArray().Length;
+            ImGui.BeginChild($"{label}tec2", new Vector2(7f + numChildWidth, size.Y), false, ImGuiWindowFlags.NoScrollbar);
+            {
+                ImGui.PushStyleColor(ImGuiCol.Text, Util.Vec_Color(66, 135, 245));
+                ImGui.SetScrollY(99999999);//Stupid way but should do the trick
+                ImGui.BeginGroup();
+                ImGui.Spacing();
+
+                string linesText = "0\n";
+                for (int i = 1; i < text.Split('\n').Length; i++)
+                    linesText += $"{i}\n";
+                
+                
+                ImGui.SameLine(2.5f);
+                
+                ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 2);
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 2);
+                ImGui.Text(linesText);
+                
+                ImGui.EndGroup();
+                ImGui.PopStyleColor();
+                ImGui.EndChild();
+            }
+            ImGui.SameLine();
+            ImGui.BeginChild("txt3", new Vector2(size.X - 5, size.Y), false, ImGuiWindowFlags.NoScrollbar);
+            {
+                //TODO Maybe some better method for maxLength what would be more memory efficient...
+                result = InputTextMultiLine($"##{label}", ref text, (uint)(text.Length + 4500), new Vector2(size.X - 5, size.Y), flags);
+                ImGui.EndChild();
+            }
+            ImGui.EndChild();
         }
-
-        aw = a.Max().ToString();
-        ImGui.SameLine(2.5f);
-        ImGui.TextV(txt, null);
-        ImGui.EndGroup();
         ImGui.PopStyleColor();
-        ImGui.EndChild();
-        ImGui.SameLine();
-        ImGui.BeginChild("txt3", new System.Numerics.Vector2(size.X - 5, size.Y), false, ImGuiWindowFlags.NoScrollbar);
-        var result = InputTextMultiLine("##textedit1", ref text, 2000000, new Vector2(size.X - 5, size.Y), flags);
-        ImGui.EndChild();
-        ImGui.EndChild();
-        ImGui.PopStyleColor();
-
         return result;
     }
-    
+
+    public static unsafe void ImFormatStringToTempBufferV(char** out_buf, char** out_buf_end, string txt)
+    {
+        ImGuiContext* g = ImGui.GetCurrentContext();
+        int buf_len =
+            ImGuiInternal.ImFormatStringV((byte*)g->TablesTempData.Data, (nuint)g->TempBuffer.Size, txt, null);
+        *out_buf = (char*)g->TempBuffer.Data;
+        if (out_buf_end != null) { *out_buf_end = (char*)(g->TempBuffer.Data + buf_len); }
+    }
+
     public static unsafe bool Begin(string name, ref bool p_open, ImGuiWindowFlags flags)
     {
         byte* native_name;

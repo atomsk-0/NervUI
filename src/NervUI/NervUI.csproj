@@ -16,11 +16,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Mochi.DearImGui" Version="0.0.2" />
-      <PackageReference Include="Mochi.DearImGui.linux-x64" Version="0.0.2" />
-      <PackageReference Include="Mochi.DearImGui.OpenTK" Version="0.0.2" />
+      <PackageReference Include="Mochi.DearImGui" Version="0.0.3-alpha0" />
+      <PackageReference Include="Mochi.DearImGui.linux-x64" Version="0.0.3-alpha0" />
+      <PackageReference Include="Mochi.DearImGui.OpenTK" Version="0.0.3-alpha0" />
       <PackageReference Include="OpenTK" Version="4.7.5" />
-      <PackageReference Include="Riok.Mapperly" Version="2.6.0" />
     </ItemGroup>
 
 </Project>
