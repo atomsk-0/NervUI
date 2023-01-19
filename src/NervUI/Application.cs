@@ -90,10 +90,4 @@ public unsafe class Application
         DefaultFont = null;
         Fonts.Clear();
     }
-    
-    //AOT Does not support reflection so this method is disabled for now maybe will use mapper to do the trick
-    /*public void PushLayer<T>()
-    {
-        //=> Layers.Add(((Layer)Activator.CreateInstance(typeof(T))));
-    }*/
 }
