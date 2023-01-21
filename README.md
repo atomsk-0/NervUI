@@ -1,4 +1,4 @@
-**V2 Isn't ready yet!**
+**V2 Isn't fully ready yet! there will be more smaller feature and other updates in future**
 # NervUI
 NervUI is easy to use app framework for c# with minimal resource usage using ImGui as GUI, OpenGL as Render Backend and GLFW for Windowing.
 ## Platform Support
