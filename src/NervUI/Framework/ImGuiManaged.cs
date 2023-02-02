@@ -2,23 +2,12 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Mochi.DearImGui;
-using Vector2 = OpenTK.Mathematics.Vector2;
+using Mochi.DearImGui.Internal;
 
-namespace NervUI;
+namespace NervUI.Framework;
 
 public class ImGuiManaged
 {
-#if false
-    //Disabled
-    public unsafe static void Image(NervTexture texture)
-    {
-        if (texture == null) 
-            return;
-        
-        ImGui.Image((void*)texture.GetHandle(), new System.Numerics.Vector2(texture.GetSize().X, texture.GetSize().Y), new System.Numerics.Vector2(), new System.Numerics.Vector2(1, 1), new Vector4(1,1,1,1), new Vector4());
-    }
-#endif
-
     public static unsafe void TextWrapped(string fmt)
     {
         byte* native_fmt;
@@ -813,49 +802,61 @@ public class ImGuiManaged
 
         return result;
     }
-
-
-    //TODO Make This code Cleaner in next code clean up
-    private static string aw = "";
-
+    
     public static unsafe bool TextEditor(string label, ref string text, Vector2 size,
         ImGuiInputTextFlags flags = ImGuiInputTextFlags.None)
     {
+        bool result;
+        
         ImGui.PushStyleColor(ImGuiCol.FrameBg, Util.Vec_Color(44, 44, 44));
-        ImGui.BeginChild("txt1", new System.Numerics.Vector2(size.X, size.Y), false,
-            ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
-        var addx = 5.9f * aw.ToCharArray().Length;
-        ImGui.BeginChild("txt2", new System.Numerics.Vector2(9f + addx, size.Y), false, ImGuiWindowFlags.NoScrollbar);
-        ImGui.PushStyleColor(ImGuiCol.Text, Util.Vec_Color(66, 135, 245));
-        ImGui.SetScrollY(9999999);
-        ImGui.BeginGroup();
-        ImGui.Spacing();
-        var a = new List<int>();
-        var lines = text.Split('\n').Length;
-        a.Add(0);
-        var txt = "0\n";
-        for (var i = 1; i < lines; i++)
+        
+        ImGui.BeginChild($"{label}tec1", new Vector2(size.X, size.Y), false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
         {
-            a.Add(i);
-            txt += $"{i}\n";
+            float numChildWidth = 6.7f * text.Split('\n').Length.ToString().ToCharArray().Length;
+            ImGui.BeginChild($"{label}tec2", new Vector2(7f + numChildWidth, size.Y), false, ImGuiWindowFlags.NoScrollbar);
+            {
+                ImGui.PushStyleColor(ImGuiCol.Text, Util.Vec_Color(66, 135, 245));
+                ImGui.SetScrollY(99999999);//Stupid way but should do the trick
+                ImGui.BeginGroup();
+                ImGui.Spacing();
+
+                string linesText = "0\n";
+                for (int i = 1; i < text.Split('\n').Length; i++)
+                    linesText += $"{i}\n";
+                
+                
+                ImGui.SameLine(2.5f);
+                
+                ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 2);
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 2);
+                ImGui.Text(linesText);
+                
+                ImGui.EndGroup();
+                ImGui.PopStyleColor();
+                ImGui.EndChild();
+            }
+            ImGui.SameLine();
+            ImGui.BeginChild("txt3", new Vector2(size.X - 5, size.Y), false, ImGuiWindowFlags.NoScrollbar);
+            {
+                //TODO Maybe some better method for maxLength what would be more memory efficient...
+                result = InputTextMultiLine($"##{label}", ref text, (uint)(text.Length + 4500), new Vector2(size.X - 5, size.Y), flags);
+                ImGui.EndChild();
+            }
+            ImGui.EndChild();
         }
-
-        aw = a.Max().ToString();
-        ImGui.SameLine(2.5f);
-        ImGui.TextV(txt, null);
-        ImGui.EndGroup();
         ImGui.PopStyleColor();
-        ImGui.EndChild();
-        ImGui.SameLine();
-        ImGui.BeginChild("txt3", new System.Numerics.Vector2(size.X - 5, size.Y), false, ImGuiWindowFlags.NoScrollbar);
-        var result = InputTextMultiLine("##textedit1", ref text, 2000000, new Vector2(size.X - 5, size.Y), flags);
-        ImGui.EndChild();
-        ImGui.EndChild();
-        ImGui.PopStyleColor();
-
         return result;
     }
-    
+
+    public static unsafe void ImFormatStringToTempBufferV(char** out_buf, char** out_buf_end, string txt)
+    {
+        ImGuiContext* g = ImGui.GetCurrentContext();
+        int buf_len =
+            ImGuiInternal.ImFormatStringV((byte*)g->TablesTempData.Data, (nuint)g->TempBuffer.Size, txt, null);
+        *out_buf = (char*)g->TempBuffer.Data;
+        if (out_buf_end != null) { *out_buf_end = (char*)(g->TempBuffer.Data + buf_len); }
+    }
+
     public static unsafe bool Begin(string name, ref bool p_open, ImGuiWindowFlags flags)
     {
         byte* native_name;
@@ -887,51 +888,4 @@ public class ImGuiManaged
         p_open = native_p_open_val != 0;
         return ret;
     }
-
-    //From https://github.com/ocornut/imgui/issues/1901 and for some reason it's not working
-#if false
-    public static unsafe void BufferingBar(string label, float value, Vector2 size_arg, uint bg_col, uint fg_col)
-    {
-        ImGuiWindow* window = ImGuiInternal.GetCurrentWindow();
-        if (!window->SkipItems)
-        {
-            ImGuiContext* g = *ImGuiInternal.GImGui;
-            ImGuiStyle style = g->Style;
-            var id = window->GetID(label);
-
-            var pos = window->DC.CursorPos;
-            var size = size_arg;
-            size.X -= style.FramePadding.X * 2;
-        
-            ImRect bb = new ImRect(pos, new System.Numerics.Vector2(pos.X + size.X, pos.Y + size.Y));
-            ImGuiInternal.ItemSize(bb, style.FramePadding.Y);
-            if (ImGuiInternal.ItemAdd(bb, id))
-            {
-                // Render
-                float circleStart = size.X * 0.7f;
-                float circleEnd = size.X;
-                float circleWidth = circleEnd - circleStart;
-        
-                window->DrawList->AddRectFilled(bb.Min, new System.Numerics.Vector2(pos.X + circleStart, bb.Max.Y), bg_col);
-                window->DrawList->AddRectFilled(bb.Min, new System.Numerics.Vector2(pos.X + circleStart*value, bb.Max.Y), fg_col);
-        
-                float t = (float)g->Time;
-                float r = size.Y / 2;
-                const float speed = 1.5f;
-        
-                const float a = speed*0;
-                const float b = speed*0.333f;
-                const float c = speed*0.666f;
-        
-                float o1 = (circleWidth+r) * (t+a - speed * (int)((t+a) / speed)) / speed;
-                float o2 = (circleWidth+r) * (t+b - speed * (int)((t+b) / speed)) / speed;
-                float o3 = (circleWidth+r) * (t+c - speed * (int)((t+c) / speed)) / speed;
-        
-                window->DrawList->AddCircleFilled(new System.Numerics.Vector2(pos.X + circleEnd - o1, bb.Min.Y + r), r, bg_col);
-                window->DrawList->AddCircleFilled(new (pos.X + circleEnd - o2, bb.Min.Y + r), r, bg_col);
-                window->DrawList->AddCircleFilled(new (pos.X + circleEnd - o3, bb.Min.Y + r), r, bg_col);
-            }
-        }
-    }
-#endif
 }

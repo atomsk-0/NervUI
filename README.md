@@ -1,4 +1,10 @@
+**V2 Isn't fully ready yet! there will be more smaller feature and other updates in future**
 # NervUI
+<<<<<<< HEAD
+NervUI is easy to use app framework for c# with minimal resource usage using ImGui as GUI, OpenGL as Render Backend and GLFW for Windowing.
+## Platform Support
+NervUI supports Linux(x64) with Xorg or Wayland and Windows(x64) and it's Native AOT Ready.
+=======
 
 NervUI Is a easy to use and simple app framework with Imgui and OpenGL as backend.
 
@@ -10,17 +16,14 @@ Better version V2 is under development in [V2 Branch](https://github.com/byte-0x
 ## Video of NervUI TextEditor Example in action
 [![NervUI TextEditor Example](https://markdown-videos.deta/youtube/wUJ3vr8q6A0)](https://youtu.be/wUJ3vr8q6A0)
 
+>>>>>>> master
 ## Requirements
 - .NET 6.0 or 7.0 SDK
-
-## Usage
-You can add NervUI to your project from nuget by searching NervUI
-
-To see how to use NervUi Check [Example](https://github.com/byte-0x74/NervUI/blob/dev/examples/DemoWindow/Program.cs) project.
-
+- Basic knowledge of ImGui
+## Documentation
+Coming soon..
 ### 3rd party libaries
 - [Dear ImGui](https://github.com/ocornut/imgui)
 - [GLFW](https://github.com/glfw/glfw)
 - [OpenTK](https://github.com/opentk/opentk)
 - [Mochi.DearImGui](https://github.com/MochiLibraries/Mochi.DearImGui) (awesome DearImGui Wrapper for C#)
-- [ManagedBass](https://github.com/ManagedBass/ManagedBass)

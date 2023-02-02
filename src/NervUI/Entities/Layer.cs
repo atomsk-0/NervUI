@@ -1,6 +1,6 @@
 using OpenTK.Windowing.Common;
 
-namespace NervUI;
+namespace NervUI.Entities;
 
 public class Layer
 {
@@ -22,15 +22,13 @@ public class Layer
 
     public virtual void OnMouseDown(MouseButtonEventArgs e)
     {
-        
     }
+    
     public virtual void OnKeyUp(KeyboardKeyEventArgs obj)
     {
-        
     }
 
     public virtual void OnKeyDown(KeyboardKeyEventArgs obj)
     {
-        
     }
 }
