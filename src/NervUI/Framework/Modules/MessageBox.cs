@@ -2,7 +2,7 @@ using System.Drawing;
 using System.Numerics;
 using Mochi.DearImGui;
 
-namespace NervUI.Modules;
+namespace NervUI.Framework.Modules;
 
 public class MessageBox
 {
@@ -33,6 +33,7 @@ public class MessageBox
             var center = new Vector2(ImGui.GetWindowPos().X + ImGui.GetWindowSize().X * 0.5f,
                 ImGui.GetWindowPos().Y + ImGui.GetWindowSize().Y * 0.5f);
             ImGui.SetNextWindowPos(center, ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
+            ImGui.SetNextWindowSize(new Vector2(350, 120));
             if (ImGui.BeginPopupModal("MessageBoxPopup"))
             {
                 ImGui.TextColored(Util.Vec_Color(_color.R, _color.G, _color.B, _color.A), Title);

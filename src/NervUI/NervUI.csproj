@@ -1,50 +1,41 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Title>NervUI</Title>
-        <Description>NervUI Is a easy to use and simple app framework with Imgui and OpenGL as backend.
-            This project is still in really early stage and supports only x64 currently
-        </Description>
-        <Copyright></Copyright>
+        <Version>2.0.1</Version>
+        <Title>NervUI-Linux</Title>
+        <Authors>byte-0x74</Authors>
+        <Description>NervUI is easy to use low resource app framework designed to support .NET 7 Native AOT and both windows and linux x64 (Xorg &amp; Wayland).NervUI uses ImGui for GUI, OpenGL for Render Backend and GLFW for Windowing.</Description>
+        <Copyright>Copyright © byte-0x74 2023</Copyright>
         <PackageProjectUrl>https://github.com/byte-0x74/NervUI</PackageProjectUrl>
+        <PackageLicenseUrl>https://licenses.nuget.org/MIT</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/byte-0x74/NervUI</RepositoryUrl>
-        <PackageTags>ImGui, UI, UIX, GUI, Framework</PackageTags>
-        <PackageReleaseNotes>Fixed bugs and added new example TextEditor</PackageReleaseNotes>
-        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-        <Version>1.1.2</Version>
+        <PackageTags>ImGui, UI, UX, GUI, Framework</PackageTags>
+        <PackageReleaseNotes>- Bug Fixes
+- Peformance optimizations
+- Native AOT support
+- Linux Support</PackageReleaseNotes>
+        <PackageId>NervUI-Linux</PackageId>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <PlatformTarget>x64</PlatformTarget>
+      <PlatformTarget>x64</PlatformTarget>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <PlatformTarget>x64</PlatformTarget>
+      <PlatformTarget>x64</PlatformTarget>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="ManagedBass" Version="3.1.1" />
-        <PackageReference Include="Mochi.DearImGui" Version="0.0.2" />
-        <PackageReference Include="Mochi.DearImGui.OpenTK" Version="0.0.2" />
-        <PackageReference Include="NotifyIcon.Windows" Version="1.1.0" />
-        <PackageReference Include="OpenTK" Version="4.7.5" />
-        <PackageReference Include="StbImageSharp" Version="2.27.13" />
-        <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="nerv.png">
-            <Pack>True</Pack>
-            <PackagePath></PackagePath>
-        </None>
-        <None Update="bass.dll">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
+      <PackageReference Include="Mochi.DearImGui" Version="0.0.3-alpha0" />
+      <PackageReference Include="Mochi.DearImGui.linux-x64" Version="0.0.3-alpha0" />
+      <PackageReference Include="Mochi.DearImGui.Native.linux-x64" Version="0.0.3-alpha0" />
+      <PackageReference Include="Mochi.DearImGui.OpenTK" Version="0.0.3-alpha0" />
+      <PackageReference Include="OpenTK" Version="4.7.5" />
     </ItemGroup>
 
 </Project>

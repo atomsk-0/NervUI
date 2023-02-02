@@ -1,109 +1,93 @@
 using Mochi.DearImGui;
-using NervUI.Modules;
+using NervUI.Common;
+using NervUI.Entities;
+using NervUI.Framework;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
 namespace NervUI;
 
-public class Application : IDisposable
+public unsafe class Application
 {
-    public delegate void MenuBarDelegate();
+    public ApplicationOptions Options { get; private set; }
+    public NervWindow Window { get; private set; }
 
-    internal static List<NervFont> Fonts = new();
-    public ApplicationOptions Options;
+    internal List<Layer> Layers = new();
 
-    public GLFWWindow Window;
+    internal NervFont DefaultFont;
 
-    public void Dispose()
-    {
-        Window.Dispose();
-        GC.SuppressFinalize(this);
-    }
-
-    public event MenuBarDelegate MenuBar;
-
-    private void CreateWindow()
-    {
-        var nativeWindowSettings = new NativeWindowSettings
-        {
-            Size = new Vector2i(Options.Size.X, Options.Size.Y),
-            Title = Options.Title,
-            APIVersion = new Version(3, 0),
-            Profile = ContextProfile.Any
-        };
-
-        Window = new GLFWWindow(nativeWindowSettings, "#version 130", Options, this);
-        Window.CenterWindow();
-    }
+    internal List<NervFont> Fonts = new();
 
     public static Application CreateApplication(ApplicationOptions options)
     {
-        Audio.Init();
-        var application = new Application();
+        Core.Initialize();
 
-        application.Options = options;
-        application.CreateWindow();
+        Application app = new Application();
+        app.Options = options;
 
-        return application;
+        return app;
     }
 
-    public void PushLayer<T>()
-    {
-        var layer = (Layer)Activator.CreateInstance(typeof(T));
-        Window.Layers.Add(layer);
-    }
-    
     public void PushLayer(Layer layer)
-    {
-        Window.Layers.Add(layer);
-    }
+        => Layers.Add(layer);
+    
+    public void SetMenuBarCallback(Action action)
+        => Window.MenuBarCallback = action;
+    
+    public void SetDockspaceCallback(Action<uint> action)
+        => Window.DockSpaceCallback = action;
 
-    public static unsafe void PushFont(string fontName)
+    public void SetStyleCallback(Action action)
+        => Window.StyleCallback = action;
+
+    public void SetDefaultFont(NervFont font)
+        => DefaultFont = font;
+    public void PopFont()
+        => ImGui.PopFont();
+    public unsafe void PushFont(string fontName)
     {
         var font = Fonts.Find(c => c.Name == fontName);
         if (font == null)
         {
-            Console.WriteLine($"ERROR: Failed to find font {fontName}. [NervUI]");
+            Core.Log($"Failed to load font {fontName}.", LogType.ERROR, ConsoleColor.Red);
             return;
         }
 
         ImGui.PushFont(font.FontData);
     }
-
-    public void SetMenuBarCallback(Action action)
-    {
-        Window.menuBarCallback = action;
-    }
-
-    public void SetDockspaceCallback(Action<uint, ImGuiDockNodeFlags> action)
-    {
-        Window.dockSpaceCallback = action;
-    }
-
-    public static void PopFont()
-    {
-        ImGui.PopFont();
-    }
-
     public void AddFont(NervFont font)
     {
+        var io = ImGui.GetIO();
         Fonts.Add(font);
-        Window.RefreshFonts();
+        font.FontData = io->Fonts->AddFontFromFileTTF(font.Path, font.Size);
+        font.Loaded = true;
     }
 
     public void Run()
+        => Window.Run();
+
+    public void CreateWindow()
     {
-        Window.Run();
+        var nativeWindowSettings = new NativeWindowSettings
+        {
+            Title = Options.Title,
+            Size = new Vector2i(Options.Width, Options.Height),
+            APIVersion = new Version(Options.OpenGlVersion.Major, Options.OpenGlVersion.Minor),
+            API = ContextAPI.OpenGL,
+            Profile = ContextProfile.Core
+        };
+
+        this.Window = new NervWindow(nativeWindowSettings, Options, this);
     }
 
-    public void Exit()
-    {
-        Environment.Exit(0);
-    }
+    public static void DisableLogs()
+        => Core.LogsEnabled = false;
 
     ~Application()
     {
-        Dispose();
+        Layers.Clear();
+        DefaultFont = null;
+        Fonts.Clear();
     }
 }

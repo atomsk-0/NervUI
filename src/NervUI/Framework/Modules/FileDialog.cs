@@ -1,7 +1,10 @@
 using System.Numerics;
+using System.Runtime.InteropServices;
 using Mochi.DearImGui;
+using NervUI.Common;
+using NervUI.Platforms;
 
-namespace NervUI.Modules;
+namespace NervUI.Framework.Modules;
 
 public enum FileDialogType
 {
@@ -20,7 +23,7 @@ public unsafe class FileDialog
 {
     private static bool FileDialogOpen;
     private static FileDialogType FileDialogType = FileDialogType.OpenFile;
-    private static string path = "C:\\";
+    private static string path = Core.GetOperatingSystem() == OSPlatform.Linux ? Linux.DefaultFilePath : Windows.DefaultFilePath;
 
     private static string selectedPath = "";
 
@@ -46,6 +49,11 @@ public unsafe class FileDialog
     private static FileDialogSortOrder type_sort_order = FileDialogSortOrder.None;
 
     private static string newFolderName = "";
+
+    private static string GetShort(string str)
+    {
+        return Core.Platform == OSPlatform.Linux ? str.Split('/').Last() : str.Split(@"\").Last();
+    }
 
     public static void ShowFileDialog(string _path, FileDialogType type, Action<string> action)
     {
@@ -75,6 +83,7 @@ public unsafe class FileDialog
 
             string[] files = null;
             string[] folders = null;
+            
             try
             {
                 files = Directory.GetFiles(_currentPath);
@@ -82,6 +91,7 @@ public unsafe class FileDialog
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
                 _errorPopStr = e.Message;
                 ImGui.OpenPopup("ErrorPopUp");
             }
@@ -97,14 +107,14 @@ public unsafe class FileDialog
                 ImGui.BeginChild("Directories##1", new Vector2(200, 300), true, ImGuiWindowFlags.HorizontalScrollbar);
                 {
                     if (ImGuiManaged.Selectable("..", false, ImGuiSelectableFlags.AllowDoubleClick,
-                            new OpenTK.Mathematics.Vector2(ImGui.GetContentRegionAvail().X, 0)))
+                            new Vector2(ImGui.GetContentRegionAvail().X, 0)))
                         if (ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
                             _currentPath = Directory.GetParent(_currentPath).FullName;
 
                     for (var i = 0; i < folders.Length; i++)
-                        if (ImGuiManaged.Selectable(folders[i].Split(@"\").Last(), i == _folderSelectedIndex,
+                        if (ImGuiManaged.Selectable(GetShort(folders[i]), i == _folderSelectedIndex,
                                 ImGuiSelectableFlags.AllowDoubleClick,
-                                new OpenTK.Mathematics.Vector2(ImGui.GetContentRegionAvail().X, 0)))
+                                new Vector2(ImGui.GetContentRegionAvail().X, 0)))
                         {
                             if (ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
                             {
@@ -190,9 +200,9 @@ public unsafe class FileDialog
 
                         for (var i = 0; i < files.Length; ++i)
                         {
-                            if (ImGuiManaged.Selectable(files[i].Split(@"\").Last(), i == _fileSelectedIndex,
+                            if (ImGuiManaged.Selectable(GetShort(files[i]), i == _fileSelectedIndex,
                                     ImGuiSelectableFlags.AllowDoubleClick,
-                                    new OpenTK.Mathematics.Vector2(ImGui.GetContentRegionAvail().X, 0)))
+                                    new Vector2(ImGui.GetContentRegionAvail().X, 0)))
                             {
                                 _fileSelectedIndex = i;
                                 _selectedFile = files[i];
