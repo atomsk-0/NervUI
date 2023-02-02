@@ -22,7 +22,7 @@ public static class Core
 
     internal static void Log(string content, LogType type, ConsoleColor color)
     {
-        //Develoepr can disable NervUI logs if he wants by calling Application.DisableLogs() if he wants.
+        //Developer can disable NervUI logs if he wants by calling Application.DisableLogs() if he wants.
         if (!LogsEnabled) return;
         
         content = $"[{DateTime.Now}]{type}: {content}";
