@@ -41,6 +41,24 @@ public unsafe class Application
     public void SetStyleCallback(Action action)
         => Window.StyleCallback = action;
 
+    public void SetWindowLoadCallback(Action action)
+        => Window.WindowLoad = action;
+
+    public void SetFileDropCallback(Action<FileDropEventArgs> action)
+        => Window.FileDrop = action;
+
+    public void SetFocusChangedCallback(Action<FocusedChangedEventArgs> action)
+        => Window.FocusChanged = action;
+
+    public void SetMouseDownCallback(Action<MouseButtonEventArgs> action)
+        => Window.MouseDown = action;
+
+    public void SetKeyUpCallback(Action<KeyboardKeyEventArgs> action)
+        => Window.KeyUp = action;
+    
+    public void SetKeyDownCallback(Action<KeyboardKeyEventArgs> action)
+        => Window.KeyDown = action;
+
     public void SetDefaultFont(NervFont font)
         => DefaultFont = font;
     public void PopFont()
