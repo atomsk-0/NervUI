@@ -15,7 +15,7 @@
 
     <ItemGroup>
       <None Update="Fonts\Roboto-Regular.ttf">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

@@ -6,10 +6,17 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PublishAot>true</PublishAot>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\NervUI\NervUI.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Fonts\Roboto-Regular.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

@@ -211,7 +211,7 @@ public unsafe class FileDialog
 
                             ImGui.NextColumn();
                             var fi = new FileInfo(files[i]);
-                            ImGui.Text(fi.Length.ToString());
+                            ImGui.Text(Util.SizeSuffix(fi.Length));
                             ImGui.NextColumn();
                             ImGui.Text(fi.Extension);
                             ImGui.NextColumn();
