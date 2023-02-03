@@ -829,7 +829,7 @@ public class ImGuiManaged
                 
                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 2);
                 ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 2);
-                ImGui.Text(linesText);
+                ImGui.Text(linesText);//TODO Fix crash issue with loading large or file with alot lines
                 
                 ImGui.EndGroup();
                 ImGui.PopStyleColor();

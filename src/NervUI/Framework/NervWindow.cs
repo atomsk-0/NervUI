@@ -22,6 +22,12 @@ public unsafe class NervWindow : NativeWindow
     internal Action<uint> DockSpaceCallback;
     internal Action MenuBarCallback;
     internal Action StyleCallback;
+    internal Action WindowLoad;
+    internal Action<FileDropEventArgs> FileDrop;
+    internal Action<FocusedChangedEventArgs> FocusChanged;
+    internal Action<MouseButtonEventArgs> MouseDown;
+    internal Action<KeyboardKeyEventArgs> KeyUp;
+    internal Action<KeyboardKeyEventArgs> KeyDown;
     
     internal Application Instance;
     private ApplicationOptions _options;
@@ -61,9 +67,11 @@ public unsafe class NervWindow : NativeWindow
             Core.Log($"ImGui Version:         {ImGui.IMGUI_VERSION}", LogType.INFO, ConsoleColor.Yellow);
             Core.Log("----------------------------------------------------------", LogType.INFO, ConsoleColor.Yellow);
         }
+
+        if (WindowLoad != null)
+            WindowLoad();
         
-        foreach (var layer in Instance.Layers)
-            layer.OnWindowLoad();
+         
     }
 
     internal void Run()
@@ -218,6 +226,41 @@ public unsafe class NervWindow : NativeWindow
         MenuBarCallback = null;
         StyleCallback = null;
         Instance = null;
+    }
+    
+    protected override void OnFileDrop(FileDropEventArgs e)
+    {
+        if (FileDrop != null)
+            FileDrop(e);
+        base.OnFileDrop(e);
+    }
+
+    protected override void OnFocusedChanged(FocusedChangedEventArgs e)
+    {
+        if (FocusChanged != null)
+            FocusChanged(e);
+        base.OnFocusedChanged(e);
+    }
+
+    protected override void OnMouseDown(MouseButtonEventArgs e)
+    {
+        if (MouseDown != null)
+            MouseDown(e);
+        base.OnMouseDown(e);
+    }
+
+    protected override void OnKeyUp(KeyboardKeyEventArgs e)
+    {
+        if (KeyUp != null)
+            KeyUp(e);
+        base.OnKeyUp(e);
+    }
+
+    protected override void OnKeyDown(KeyboardKeyEventArgs e)
+    {
+        if (KeyDown != null)
+            KeyDown(e);
+        base.OnKeyDown(e);
     }
 }
 
