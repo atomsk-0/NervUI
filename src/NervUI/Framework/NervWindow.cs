@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Numerics;
 using Mochi.DearImGui;
 using Mochi.DearImGui.Internal;
@@ -5,6 +6,7 @@ using Mochi.DearImGui.OpenTK;
 using NervUI.Common;
 using NervUI.Entities;
 using NervUI.Framework.Modules;
+using NervUI.Platforms;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -34,6 +36,7 @@ public unsafe class NervWindow : NativeWindow
     private bool _firstTime = true;
 
     private const string GLSL_VERSION_130 = "#version 130";
+    private Vector2 mousePos = new Vector2(0, 0);
 
     /// <summary>
     /// Create new NervWindow Instance
@@ -48,8 +51,9 @@ public unsafe class NervWindow : NativeWindow
         Instance = instance;
         _options = options;
         VSync = options.VSync ? VSyncMode.On : VSyncMode.Off;
-        WindowBorder = options.WindowBorder;
+        WindowBorder = options.NativeWindow ? options.WindowBorder : WindowBorder.Hidden;
         WindowState = options.WindowState;
+        StyleCallback = options.StyleCallback;
         
         GL.LoadBindings(new GLFWBindingsContext());
         CenterWindow();
@@ -70,8 +74,6 @@ public unsafe class NervWindow : NativeWindow
 
         if (WindowLoad != null)
             WindowLoad();
-        
-         
     }
 
     internal void Run()
@@ -129,17 +131,29 @@ public unsafe class NervWindow : NativeWindow
         ImGui.SetNextWindowPos(new Vector2(viewport->WorkPos.X, viewport->WorkPos.Y), ImGuiCond.None, new Vector2(0, 0));
         ImGui.SetNextWindowSize(viewport->WorkSize);
         ImGui.SetNextWindowViewport(viewport->ID);
-        
-        windowFlags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize |
-                       ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus |
-                       ImGuiWindowFlags.NoNavFocus;
+
+        if (_options.NativeWindow)
+        {
+            windowFlags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize |
+                           ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus |
+                           ImGuiWindowFlags.NoNavFocus;
+        }
+        else
+        {
+            windowFlags |= ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse;
+        }
+
         
         windowFlags |= dockNodeFlags.HasFlag(ImGuiDockNodeFlags.PassthruCentralNode)
             ? ImGuiWindowFlags.NoBackground
             : 0;
         
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
-        ImGui.Begin("NervUI Dockspace", null, windowFlags);
+        bool t = true;
+        if (_options.NativeWindow)
+            ImGui.Begin(_options.Title, default, windowFlags);
+        else
+            ImGui.Begin(_options.Title, &t, windowFlags);
         ImGui.PopStyleVar();
         
         if (io->ConfigFlags.HasFlag(ImGuiConfigFlags.DockingEnable))
@@ -246,7 +260,27 @@ public unsafe class NervWindow : NativeWindow
     {
         if (MouseDown != null)
             MouseDown(e);
+        if (e.Button == MouseButton.Left && !_options.NativeWindow)
+        {
+            if (MousePosition.Y <= 20)
+            {
+                var p = Process.GetCurrentProcess();
+                Windows.DragMove(p.MainWindowHandle);
+            }
+            
+            //TODO Add callback before env exit
+            if (MousePosition.X >= _options.Width - 20 && MousePosition.Y <= 20)
+                Environment.Exit(0);
+
+        }
         base.OnMouseDown(e);
+    }
+
+    protected override void OnMouseMove(MouseMoveEventArgs e)
+    {
+        mousePos.X = e.X;
+        mousePos.Y = e.Y;
+        base.OnMouseMove(e);
     }
 
     protected override void OnKeyUp(KeyboardKeyEventArgs e)

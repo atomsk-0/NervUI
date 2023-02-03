@@ -38,9 +38,6 @@ public unsafe class Application
     public void SetDockspaceCallback(Action<uint> action)
         => Window.DockSpaceCallback = action;
 
-    public void SetStyleCallback(Action action)
-        => Window.StyleCallback = action;
-
     public void SetWindowLoadCallback(Action action)
         => Window.WindowLoad = action;
 
