@@ -96,6 +96,7 @@ public unsafe class NervWindow : NativeWindow
                 ImGui.OpenPopup("MessageBoxPopup");
                 MessageBox.RenderMessageBox();
             }
+            NervUIMetrics.Render();
         
             foreach (var layer in Instance.Layers)
                 layer.OnUIRender();

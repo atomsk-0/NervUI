@@ -23,7 +23,8 @@ internal static unsafe class Program
         {
             var options = new ApplicationOptions()
             {
-                Title = "Text Editor Demo"
+                Title = "Text Editor Demo",
+                VSync = false
             };
         
             _application = Application.CreateApplication(options);
@@ -68,6 +69,11 @@ internal static unsafe class Program
                         }
                     }
                     if (ImGuiManaged.MenuItem("Exit", "")) Environment.Exit(0);
+                    ImGui.EndMenu();
+                }
+                if (ImGui.BeginMenu("Tools"))
+                {
+                    if (ImGuiManaged.MenuItem("Metrics", "")) NervUIMetrics.Show = true;
                     ImGui.EndMenu();
                 }
             });

@@ -184,138 +184,6 @@ public class ImGuiManaged
         }
     }
 
-    public static unsafe bool ListBox(string label, ref int current_item, string[] items, int items_count)
-    {
-        var result = false;
-        byte* native_label;
-        var label_byteCount = 0;
-        if (label != null)
-        {
-            label_byteCount = Encoding.UTF8.GetByteCount(label);
-            if (label_byteCount > Util.StackAllocationSizeLimit)
-            {
-                native_label = Util.Allocate(label_byteCount + 1);
-            }
-            else
-            {
-                var native_label_stackBytes = stackalloc byte[label_byteCount + 1];
-                native_label = native_label_stackBytes;
-            }
-
-            var native_label_offset = Util.GetUtf8(label, native_label, label_byteCount);
-            native_label[native_label_offset] = 0;
-        }
-        else
-        {
-            native_label = null;
-        }
-
-        var items_byteCounts = stackalloc int[items.Length];
-        var items_byteCount = 0;
-        for (var i = 0; i < items.Length; i++)
-        {
-            var s = items[i];
-            items_byteCounts[i] = Encoding.UTF8.GetByteCount(s);
-            items_byteCount += items_byteCounts[i] + 1;
-        }
-
-        var native_items_data = stackalloc byte[items_byteCount];
-        var offset = 0;
-        for (var i = 0; i < items.Length; i++)
-        {
-            var s = items[i];
-            fixed (char* sPtr = s)
-            {
-                offset += Encoding.UTF8.GetBytes(sPtr, s.Length, native_items_data + offset, items_byteCounts[i]);
-                native_items_data[offset] = 0;
-                offset += 1;
-            }
-        }
-
-        var native_items = stackalloc byte*[items.Length];
-        offset = 0;
-        for (var i = 0; i < items.Length; i++)
-        {
-            native_items[i] = &native_items_data[offset];
-            offset += items_byteCounts[i] + 1;
-        }
-
-        var height_in_items = -1;
-        fixed (int* native_current_item = &current_item)
-        {
-            result = ImGui.ListBox(native_label, native_current_item, native_items, items_count, height_in_items);
-            if (label_byteCount > Util.StackAllocationSizeLimit) Util.Free(native_label);
-        }
-
-        return result;
-    }
-
-    public static unsafe bool ListBox(string label, ref int current_item, string[] items, int items_count,
-        int height_in_items)
-    {
-        var result = false;
-        byte* native_label;
-        var label_byteCount = 0;
-        if (label != null)
-        {
-            label_byteCount = Encoding.UTF8.GetByteCount(label);
-            if (label_byteCount > Util.StackAllocationSizeLimit)
-            {
-                native_label = Util.Allocate(label_byteCount + 1);
-            }
-            else
-            {
-                var native_label_stackBytes = stackalloc byte[label_byteCount + 1];
-                native_label = native_label_stackBytes;
-            }
-
-            var native_label_offset = Util.GetUtf8(label, native_label, label_byteCount);
-            native_label[native_label_offset] = 0;
-        }
-        else
-        {
-            native_label = null;
-        }
-
-        var items_byteCounts = stackalloc int[items.Length];
-        var items_byteCount = 0;
-        for (var i = 0; i < items.Length; i++)
-        {
-            var s = items[i];
-            items_byteCounts[i] = Encoding.UTF8.GetByteCount(s);
-            items_byteCount += items_byteCounts[i] + 1;
-        }
-
-        var native_items_data = stackalloc byte[items_byteCount];
-        var offset = 0;
-        for (var i = 0; i < items.Length; i++)
-        {
-            var s = items[i];
-            fixed (char* sPtr = s)
-            {
-                offset += Encoding.UTF8.GetBytes(sPtr, s.Length, native_items_data + offset, items_byteCounts[i]);
-                native_items_data[offset] = 0;
-                offset += 1;
-            }
-        }
-
-        var native_items = stackalloc byte*[items.Length];
-        offset = 0;
-        for (var i = 0; i < items.Length; i++)
-        {
-            native_items[i] = &native_items_data[offset];
-            offset += items_byteCounts[i] + 1;
-        }
-
-        fixed (int* native_current_item = &current_item)
-        {
-            result = ImGui.ListBox(native_label, native_current_item, native_items, items_count, height_in_items);
-            if (label_byteCount > Util.StackAllocationSizeLimit) Util.Free(native_label);
-        }
-
-        return result;
-    }
-
     public static bool MenuItem(string label, string shortcut, bool selected, bool enabled)
     {
         unsafe
@@ -532,7 +400,7 @@ public class ImGuiManaged
         ImGuiSelectableFlags flags = 0;
         var size = new Vector2();
         var result = ImGui.Selectable(native_label, false, flags,
-            new Vector2(size.X, size.Y));
+            new System.Numerics.Vector2(size.X, size.Y));
         if (label_byteCount > Util.StackAllocationSizeLimit) Util.Free(native_label);
 
         return result;
@@ -567,7 +435,7 @@ public class ImGuiManaged
         ImGuiSelectableFlags flags = 0;
         var size = new Vector2();
         var result = ImGui.Selectable(native_label, selected, flags,
-            new Vector2(size.X, size.Y));
+            new System.Numerics.Vector2(size.X, size.Y));
         if (label_byteCount > Util.StackAllocationSizeLimit) Util.Free(native_label);
 
         return result;
@@ -601,7 +469,7 @@ public class ImGuiManaged
         var native_selected = selected ? (byte)1 : (byte)0;
         var size = new Vector2();
         var result = ImGui.Selectable(native_label, selected, flags,
-            new Vector2(size.X, size.Y));
+            new System.Numerics.Vector2(size.X, size.Y));
         if (label_byteCount > Util.StackAllocationSizeLimit) Util.Free(native_label);
         return result;
     }
@@ -633,7 +501,7 @@ public class ImGuiManaged
 
         var native_selected = selected ? (byte)1 : (byte)0;
         var result = ImGui.Selectable(native_label, selected, flags,
-            new Vector2(size.X, size.Y));
+            new System.Numerics.Vector2(size.X, size.Y));
         if (label_byteCount > Util.StackAllocationSizeLimit) Util.Free(native_label);
 
         return result;
@@ -671,7 +539,7 @@ public class ImGuiManaged
         var ok = p_selected;
         var test = &ok;
         var result = ImGui.Selectable(native_label, test, flags,
-            new Vector2(size.X, size.Y));
+            new System.Numerics.Vector2(size.X, size.Y));
         if (label_byteCount > Util.StackAllocationSizeLimit) Util.Free(native_label);
         p_selected = native_p_selected_val != 0;
         return result;
@@ -708,7 +576,7 @@ public class ImGuiManaged
         var ok = p_selected;
         var test = &ok;
         var result = ImGui.Selectable(native_label, test, flags,
-            new Vector2(size.X, size.Y));
+            new System.Numerics.Vector2(size.X, size.Y));
         if (label_byteCount > Util.StackAllocationSizeLimit) Util.Free(native_label);
         p_selected = native_p_selected_val != 0;
         return result;
@@ -744,7 +612,7 @@ public class ImGuiManaged
         var ok = p_selected;
         var test = &ok;
         var result = ImGui.Selectable(native_label, test, flags,
-            new Vector2(size.X, size.Y));
+            new System.Numerics.Vector2(size.X, size.Y));
         if (label_byteCount > Util.StackAllocationSizeLimit) Util.Free(native_label);
         p_selected = native_p_selected_val != 0;
         return result;
@@ -848,7 +716,7 @@ public class ImGuiManaged
         Unsafe.CopyBlock(originalUtf8InputBytes, utf8InputBytes, (uint)inputBufSize);
 
         var result = ImGui.InputTextMultiline(utf8LabelBytes, utf8InputBytes, (nuint)inputBufSize,
-            new Vector2(size.X, size.Y), flags, callback, user_data);
+            new System.Numerics.Vector2(size.X, size.Y), flags, callback, user_data);
 
         if (!Util.AreStringsEqual(originalUtf8InputBytes, inputBufSize, utf8InputBytes))
             input = Util.StringFromPtr(utf8InputBytes);
@@ -934,37 +802,35 @@ public class ImGuiManaged
 
         return result;
     }
-
+    
     public static unsafe bool TextEditor(string label, ref string text, Vector2 size,
         ImGuiInputTextFlags flags = ImGuiInputTextFlags.None)
     {
         bool result;
-
+        
         ImGui.PushStyleColor(ImGuiCol.FrameBg, Util.Vec_Color(44, 44, 44));
-
-        ImGui.BeginChild($"{label}tec1", new Vector2(size.X, size.Y), false,
-            ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
+        
+        ImGui.BeginChild($"{label}tec1", new Vector2(size.X, size.Y), false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
         {
-            var numChildWidth = 6.7f * text.Split('\n').Length.ToString().ToCharArray().Length;
-            ImGui.BeginChild($"{label}tec2", new Vector2(7f + numChildWidth, size.Y), false,
-                ImGuiWindowFlags.NoScrollbar);
+            float numChildWidth = 6.7f * text.Split('\n').Length.ToString().ToCharArray().Length;
+            ImGui.BeginChild($"{label}tec2", new Vector2(7f + numChildWidth, size.Y), false, ImGuiWindowFlags.NoScrollbar);
             {
                 ImGui.PushStyleColor(ImGuiCol.Text, Util.Vec_Color(66, 135, 245));
-                ImGui.SetScrollY(99999999); //Stupid way but should do the trick
+                ImGui.SetScrollY(99999999);//Stupid way but should do the trick
                 ImGui.BeginGroup();
                 ImGui.Spacing();
 
-                var linesText = "0\n";
-                for (var i = 1; i < text.Split('\n').Length; i++)
+                string linesText = "0\n";
+                for (int i = 1; i < text.Split('\n').Length; i++)
                     linesText += $"{i}\n";
-
-
+                
+                
                 ImGui.SameLine(2.5f);
-
+                
                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 2);
                 ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 2);
-                ImGui.Text(linesText); //TODO Fix crash issue with loading large or file with alot lines
-
+                ImGui.Text(linesText);//TODO Fix crash issue with loading large or file with alot lines
+                
                 ImGui.EndGroup();
                 ImGui.PopStyleColor();
                 ImGui.EndChild();
@@ -973,8 +839,7 @@ public class ImGuiManaged
             ImGui.BeginChild("txt3", new Vector2(size.X - 5, size.Y), false, ImGuiWindowFlags.NoScrollbar);
             {
                 //TODO Maybe some better method for maxLength what would be more memory efficient...
-                result = InputTextMultiLine($"##{label}", ref text, (uint)(text.Length + 4500),
-                    new Vector2(size.X - 5, size.Y), flags);
+                result = InputTextMultiLine($"##{label}", ref text, (uint)(text.Length + 4500), new Vector2(size.X - 5, size.Y), flags);
                 ImGui.EndChild();
             }
             ImGui.EndChild();
@@ -985,17 +850,17 @@ public class ImGuiManaged
 
     public static unsafe void ImFormatStringToTempBufferV(char** out_buf, char** out_buf_end, string txt)
     {
-        var g = ImGui.GetCurrentContext();
-        var buf_len =
+        ImGuiContext* g = ImGui.GetCurrentContext();
+        int buf_len =
             ImGuiInternal.ImFormatStringV((byte*)g->TablesTempData.Data, (nuint)g->TempBuffer.Size, txt, null);
         *out_buf = (char*)g->TempBuffer.Data;
-        if (out_buf_end != null) *out_buf_end = (char*)(g->TempBuffer.Data + buf_len);
+        if (out_buf_end != null) { *out_buf_end = (char*)(g->TempBuffer.Data + buf_len); }
     }
 
     public static unsafe bool Begin(string name, ref bool p_open, ImGuiWindowFlags flags)
     {
         byte* native_name;
-        var name_byteCount = 0;
+        int name_byteCount = 0;
         if (name != null)
         {
             name_byteCount = Encoding.UTF8.GetByteCount(name);
@@ -1005,23 +870,21 @@ public class ImGuiManaged
             }
             else
             {
-                var native_name_stackBytes = stackalloc byte[name_byteCount + 1];
+                byte* native_name_stackBytes = stackalloc byte[name_byteCount + 1];
                 native_name = native_name_stackBytes;
             }
-
-            var native_name_offset = Util.GetUtf8(name, native_name, name_byteCount);
+            int native_name_offset = Util.GetUtf8(name, native_name, name_byteCount);
             native_name[native_name_offset] = 0;
         }
-        else
-        {
-            native_name = null;
-        }
-
-        var native_p_open_val = p_open ? (byte)1 : (byte)0;
+        else { native_name = null; }
+        byte native_p_open_val = p_open ? (byte)1 : (byte)0;
         var ok = p_open;
         var test = &ok;
         var ret = ImGui.Begin(native_name, test, flags);
-        if (name_byteCount > Util.StackAllocationSizeLimit) Util.Free(native_name);
+        if (name_byteCount > Util.StackAllocationSizeLimit)
+        {
+            Util.Free(native_name);
+        }
         p_open = native_p_open_val != 0;
         return ret;
     }

@@ -10,6 +10,7 @@ namespace NervUI;
 
 public unsafe class Application
 {
+    internal static Application Instance;
     public ApplicationOptions Options { get; private set; }
     public NervWindow Window { get; private set; }
 
@@ -25,6 +26,7 @@ public unsafe class Application
 
         Application app = new Application();
         app.Options = options;
+        Instance = app;
 
         return app;
     }
