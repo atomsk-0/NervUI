@@ -308,6 +308,138 @@ public class ImGuiManaged
         }
     }
 
+    public static unsafe bool ListBox(string label, ref int current_item, string[] items, int items_count)
+    {
+        var result = false;
+        byte* native_label;
+        var label_byteCount = 0;
+        if (label != null)
+        {
+            label_byteCount = Encoding.UTF8.GetByteCount(label);
+            if (label_byteCount > Util.StackAllocationSizeLimit)
+            {
+                native_label = Util.Allocate(label_byteCount + 1);
+            }
+            else
+            {
+                var native_label_stackBytes = stackalloc byte[label_byteCount + 1];
+                native_label = native_label_stackBytes;
+            }
+
+            var native_label_offset = Util.GetUtf8(label, native_label, label_byteCount);
+            native_label[native_label_offset] = 0;
+        }
+        else
+        {
+            native_label = null;
+        }
+
+        var items_byteCounts = stackalloc int[items.Length];
+        var items_byteCount = 0;
+        for (var i = 0; i < items.Length; i++)
+        {
+            var s = items[i];
+            items_byteCounts[i] = Encoding.UTF8.GetByteCount(s);
+            items_byteCount += items_byteCounts[i] + 1;
+        }
+
+        var native_items_data = stackalloc byte[items_byteCount];
+        var offset = 0;
+        for (var i = 0; i < items.Length; i++)
+        {
+            var s = items[i];
+            fixed (char* sPtr = s)
+            {
+                offset += Encoding.UTF8.GetBytes(sPtr, s.Length, native_items_data + offset, items_byteCounts[i]);
+                native_items_data[offset] = 0;
+                offset += 1;
+            }
+        }
+
+        var native_items = stackalloc byte*[items.Length];
+        offset = 0;
+        for (var i = 0; i < items.Length; i++)
+        {
+            native_items[i] = &native_items_data[offset];
+            offset += items_byteCounts[i] + 1;
+        }
+
+        var height_in_items = -1;
+        fixed (int* native_current_item = &current_item)
+        {
+            result = ImGui.ListBox(native_label, native_current_item, native_items, items_count, height_in_items);
+            if (label_byteCount > Util.StackAllocationSizeLimit) Util.Free(native_label);
+        }
+
+        return result;
+    }
+
+    public static unsafe bool ListBox(string label, ref int current_item, string[] items, int items_count,
+        int height_in_items)
+    {
+        var result = false;
+        byte* native_label;
+        var label_byteCount = 0;
+        if (label != null)
+        {
+            label_byteCount = Encoding.UTF8.GetByteCount(label);
+            if (label_byteCount > Util.StackAllocationSizeLimit)
+            {
+                native_label = Util.Allocate(label_byteCount + 1);
+            }
+            else
+            {
+                var native_label_stackBytes = stackalloc byte[label_byteCount + 1];
+                native_label = native_label_stackBytes;
+            }
+
+            var native_label_offset = Util.GetUtf8(label, native_label, label_byteCount);
+            native_label[native_label_offset] = 0;
+        }
+        else
+        {
+            native_label = null;
+        }
+
+        var items_byteCounts = stackalloc int[items.Length];
+        var items_byteCount = 0;
+        for (var i = 0; i < items.Length; i++)
+        {
+            var s = items[i];
+            items_byteCounts[i] = Encoding.UTF8.GetByteCount(s);
+            items_byteCount += items_byteCounts[i] + 1;
+        }
+
+        var native_items_data = stackalloc byte[items_byteCount];
+        var offset = 0;
+        for (var i = 0; i < items.Length; i++)
+        {
+            var s = items[i];
+            fixed (char* sPtr = s)
+            {
+                offset += Encoding.UTF8.GetBytes(sPtr, s.Length, native_items_data + offset, items_byteCounts[i]);
+                native_items_data[offset] = 0;
+                offset += 1;
+            }
+        }
+
+        var native_items = stackalloc byte*[items.Length];
+        offset = 0;
+        for (var i = 0; i < items.Length; i++)
+        {
+            native_items[i] = &native_items_data[offset];
+            offset += items_byteCounts[i] + 1;
+        }
+
+        fixed (int* native_current_item = &current_item)
+        {
+            result = ImGui.ListBox(native_label, native_current_item, native_items, items_count, height_in_items);
+            if (label_byteCount > Util.StackAllocationSizeLimit) Util.Free(native_label);
+        }
+
+        return result;
+    }
+    
     public static bool MenuItem(string label, string shortcut, ref bool p_selected, bool enabled)
     {
         unsafe
