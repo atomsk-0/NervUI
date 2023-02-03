@@ -8,7 +8,7 @@ NervUI supports Linux(x64) with Xorg or Wayland and Windows(x64) and it's Native
 - Basic knowledge of ImGui
 ## Documentation
 Coming soon..
-### 3rd party libaries
+### 3rd party libraries
 - [Dear ImGui](https://github.com/ocornut/imgui)
 - [GLFW](https://github.com/glfw/glfw)
 - [OpenTK](https://github.com/opentk/opentk)
