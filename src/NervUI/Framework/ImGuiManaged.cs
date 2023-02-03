@@ -816,7 +816,7 @@ public class ImGuiManaged
             ImGui.BeginChild($"{label}tec2", new Vector2(7f + numChildWidth, size.Y), false, ImGuiWindowFlags.NoScrollbar);
             {
                 ImGui.PushStyleColor(ImGuiCol.Text, Util.Vec_Color(66, 135, 245));
-                ImGui.SetScrollY(99999999);//Stupid way but should do the trick
+                ImGui.SetScrollY(ImGui.GetScrollMaxY());
                 ImGui.BeginGroup();
                 ImGui.Spacing();
 

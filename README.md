@@ -1,6 +1,6 @@
-**V2 Isn't fully ready yet! there will be more smaller feature and other updates in future**
 # NervUI
 NervUI is easy to use app framework for c# with minimal resource usage using ImGui as GUI, OpenGL as Render Backend and GLFW for Windowing.
+![Text Editor Demo](https://cdn.discordapp.com/attachments/1060588280904683581/1070951139274657822/image.png)
 ## Platform Support
 NervUI supports Linux(x64) with Xorg or Wayland and Windows(x64) and it's Native AOT Ready.
 ## Requirements
@@ -8,7 +8,7 @@ NervUI supports Linux(x64) with Xorg or Wayland and Windows(x64) and it's Native
 - Basic knowledge of ImGui
 ## Documentation
 Coming soon..
-### 3rd party libaries
+### 3rd party libraries
 - [Dear ImGui](https://github.com/ocornut/imgui)
 - [GLFW](https://github.com/glfw/glfw)
 - [OpenTK](https://github.com/opentk/opentk)
