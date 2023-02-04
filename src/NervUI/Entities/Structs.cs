@@ -19,10 +19,15 @@ public struct ApplicationOptions
     public WindowState WindowState { get; set; }
     public WindowBorder WindowBorder { get; set; }
     
+    //Experimental currently supports only Windows. if disabled it removes Window borders and turn the imgui as window borders
+    public bool NativeWindow { get; set; }
+    
     /// <summary>
     /// Disabling Docking disables ImGui Docking system by default it's enabled
     /// </summary>
     public bool Docking { get; set; }
+    
+    public Action StyleCallback { get; set; }
 
     public ApplicationOptions()
     {
@@ -34,6 +39,8 @@ public struct ApplicationOptions
         WindowState = WindowState.Normal;
         WindowBorder = WindowBorder.Resizable;
         Docking = true;
+        StyleCallback = null;
+        NativeWindow = true;
     }
 }
 

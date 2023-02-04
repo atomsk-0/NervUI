@@ -28,7 +28,8 @@ public unsafe class MainLayer : Layer
             ImGui.Separator();
             if (ImGui.Button($"This button is clicked {_clickTimes} times.", default))
                 _clickTimes++;
-            ImGuiManaged.TextEditor("textEditor1", ref text1, new Vector2(900, 500));
+            //This method of applying maxlength gonna use alot memory...
+            ImGuiManaged.TextEditor("textEditor1", ref text1, 9999, new Vector2(900, 500));
             ImGui.End();
         }
     }
