@@ -23,7 +23,8 @@ internal static unsafe class Program
         {
             var options = new ApplicationOptions()
             {
-                Title = "TestWindow"
+                Title = "TestWindow",
+                NativeWindow = false//Currently works on windows only
             };
         
             _application = Application.CreateApplication(options);

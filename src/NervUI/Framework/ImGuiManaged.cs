@@ -935,7 +935,7 @@ public class ImGuiManaged
         return result;
     }
     
-    public static unsafe bool TextEditor(string label, ref string text, Vector2 size,
+    public static unsafe bool TextEditor(string label, ref string text, uint maxLength, Vector2 size,
         ImGuiInputTextFlags flags = ImGuiInputTextFlags.None)
     {
         bool result;
@@ -948,7 +948,7 @@ public class ImGuiManaged
             ImGui.BeginChild($"{label}tec2", new Vector2(7f + numChildWidth, size.Y), false, ImGuiWindowFlags.NoScrollbar);
             {
                 ImGui.PushStyleColor(ImGuiCol.Text, Util.Vec_Color(66, 135, 245));
-                ImGui.SetScrollY(99999999);//Stupid way but should do the trick
+                ImGui.SetScrollY(ImGui.GetScrollMaxY());
                 ImGui.BeginGroup();
                 ImGui.Spacing();
 
@@ -970,8 +970,7 @@ public class ImGuiManaged
             ImGui.SameLine();
             ImGui.BeginChild("txt3", new Vector2(size.X - 5, size.Y), false, ImGuiWindowFlags.NoScrollbar);
             {
-                //TODO Maybe some better method for maxLength what would be more memory efficient...
-                result = InputTextMultiLine($"##{label}", ref text, (uint)(text.Length + 4500), new Vector2(size.X - 5, size.Y), flags);
+                result = InputTextMultiLine($"##{label}", ref text, maxLength, new Vector2(size.X - 5, size.Y), flags);
                 ImGui.EndChild();
             }
             ImGui.EndChild();

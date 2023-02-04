@@ -24,8 +24,9 @@ public unsafe class MainLayer : Layer
                 {
                     if (ImGui.BeginTabItem(editor.Title, &iOpened, ImGuiTabItemFlags.UnsavedDocument))
                     {
+                        //This method of applying maxlength gonna use alot memory...
                         if (ImGuiManaged.TextEditor($"##textEditor{editor.Title}", ref editor.Text,
-                                new Vector2(ImGui.GetWindowWidth() - 15, ImGui.GetWindowHeight() - 60)))
+                                9999, new Vector2(ImGui.GetWindowWidth() - 15, ImGui.GetWindowHeight() - 60)))
                         {
                             if (File.Exists(editor.FilePath) && editor.isSaved)
                             {
@@ -43,8 +44,9 @@ public unsafe class MainLayer : Layer
                 {
                     if (ImGui.BeginTabItem(editor.Title, &iOpened))
                     {
+                        //This method of applying maxlength gonna use alot memory...
                         if (ImGuiManaged.TextEditor($"##textEditor{editor.Title}", ref editor.Text,
-                                new Vector2(ImGui.GetWindowWidth() - 15, ImGui.GetWindowHeight() - 60)))
+                                9999, new Vector2(ImGui.GetWindowWidth() - 15, ImGui.GetWindowHeight() - 60)))
                         {
                             if (File.Exists(editor.FilePath) && editor.isSaved)
                             {
