@@ -1,4 +1,5 @@
 using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Common.Input;
 
 
 namespace NervUI.Entities;
@@ -29,6 +30,8 @@ public struct ApplicationOptions
     
     public Action StyleCallback { get; set; }
 
+    public WindowIcon Icon;
+
     public ApplicationOptions()
     {
         Title = "NervUI Application";
@@ -41,6 +44,7 @@ public struct ApplicationOptions
         Docking = true;
         StyleCallback = null;
         NativeWindow = true;
+        Icon = null;
     }
 }
 

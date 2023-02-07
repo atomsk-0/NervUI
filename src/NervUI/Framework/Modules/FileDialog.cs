@@ -55,6 +55,12 @@ public unsafe class FileDialog
         return Core.Platform == OSPlatform.Linux ? str.Split('/').Last() : str.Split(@"\").Last();
     }
 
+    /// <summary>
+    /// Shows FileDialog to user to choose Folder or File
+    /// </summary>
+    /// <param name="_path">Dialog start path</param>
+    /// <param name="type">dialog type</param>
+    /// <param name="action">Callback what returns string of chosen file/folder</param>
     public static void ShowFileDialog(string _path, FileDialogType type, Action<string> action)
     {
         path = _path;

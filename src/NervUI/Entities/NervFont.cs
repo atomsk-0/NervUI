@@ -18,6 +18,6 @@ public unsafe class NervFont
         Path = path;
         Size = size;
     }
-    
+
     internal bool Loaded = false;
 }

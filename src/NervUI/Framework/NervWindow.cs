@@ -25,6 +25,7 @@ public unsafe class NervWindow : NativeWindow
     internal Action MenuBarCallback;
     internal Action StyleCallback;
     internal Action WindowLoad;
+    internal Action ApplicationClosing;
     internal Action<FileDropEventArgs> FileDrop;
     internal Action<FocusedChangedEventArgs> FocusChanged;
     internal Action<MouseButtonEventArgs> MouseDown;
@@ -41,9 +42,9 @@ public unsafe class NervWindow : NativeWindow
     /// <summary>
     /// Create new NervWindow Instance
     /// </summary>
-    /// <param name="nativeWindowSettings"></param>
-    /// <param name="options"></param>
-    /// <param name="instance"></param>
+    /// <param name="nativeWindowSettings">OpenTK's native Window settings</param>
+    /// <param name="options">NervUI Application options</param>
+    /// <param name="instance">Instance of Application</param>
     public NervWindow(NativeWindowSettings nativeWindowSettings, ApplicationOptions options, Application instance) : base(nativeWindowSettings)
     {
         Context.MakeCurrent();
@@ -220,7 +221,7 @@ public unsafe class NervWindow : NativeWindow
         {
             Instance.DefaultFont.FontData =
                 io->Fonts->AddFontFromFileTTF(Instance.DefaultFont.Path, Instance.DefaultFont.Size);
-            io->FontDefault = Instance.DefaultFont.FontData;
+                io->FontDefault = Instance.DefaultFont.FontData;
             Instance.DefaultFont.Loaded = true;
         }
 
@@ -269,9 +270,12 @@ public unsafe class NervWindow : NativeWindow
                 Windows.DragMove(p.MainWindowHandle);
             }
             
-            //TODO Add callback before env exit
             if (MousePosition.X >= _options.Width - 20 && MousePosition.Y <= 20)
+            {
+                if (ApplicationClosing != null)
+                    ApplicationClosing();
                 Environment.Exit(0);
+            }
 
         }
         base.OnMouseDown(e);
