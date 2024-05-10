@@ -1,37 +1,12 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B3816158-DC22-4964-9E7C-437242D8060D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NervUI", "src\NervUI\NervUI.csproj", "{DA72F704-A1CE-4622-97C3-8C92A1D47306}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{132C97D9-7994-44D9-A2EC-6C48CB6E8EB4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWindow", "examples\TestWindow\TestWindow.csproj", "{D3F2D9F1-5AF2-41C6-9B1E-6AF5A7A9C478}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEditor", "examples\TextEditor\TextEditor.csproj", "{94582577-765F-4952-B38E-256CFC34B93E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DA72F704-A1CE-4622-97C3-8C92A1D47306}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{DA72F704-A1CE-4622-97C3-8C92A1D47306}.Debug|x64.Build.0 = Debug|Any CPU
-		{DA72F704-A1CE-4622-97C3-8C92A1D47306}.Release|x64.ActiveCfg = Release|Any CPU
-		{DA72F704-A1CE-4622-97C3-8C92A1D47306}.Release|x64.Build.0 = Release|Any CPU
-		{D3F2D9F1-5AF2-41C6-9B1E-6AF5A7A9C478}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D3F2D9F1-5AF2-41C6-9B1E-6AF5A7A9C478}.Debug|x64.Build.0 = Debug|Any CPU
-		{D3F2D9F1-5AF2-41C6-9B1E-6AF5A7A9C478}.Release|x64.ActiveCfg = Release|Any CPU
-		{D3F2D9F1-5AF2-41C6-9B1E-6AF5A7A9C478}.Release|x64.Build.0 = Release|Any CPU
-		{94582577-765F-4952-B38E-256CFC34B93E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{94582577-765F-4952-B38E-256CFC34B93E}.Debug|x64.Build.0 = Debug|Any CPU
-		{94582577-765F-4952-B38E-256CFC34B93E}.Release|x64.ActiveCfg = Release|Any CPU
-		{94582577-765F-4952-B38E-256CFC34B93E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{DA72F704-A1CE-4622-97C3-8C92A1D47306} = {B3816158-DC22-4964-9E7C-437242D8060D}
-		{D3F2D9F1-5AF2-41C6-9B1E-6AF5A7A9C478} = {132C97D9-7994-44D9-A2EC-6C48CB6E8EB4}
-		{94582577-765F-4952-B38E-256CFC34B93E} = {132C97D9-7994-44D9-A2EC-6C48CB6E8EB4}
 	EndGlobalSection
 EndGlobal
